@@ -74,6 +74,14 @@ Exp :
 ;
 
 Lval :	  ID		{ Janus.IntVar $1 }
+	| ID LBRACK Exp RBRACK
+	                { Janus.ArrayIndex(#1 $1, #1 $3, #2 $1) }
 
-Cond : 
+Cond :	  Exp LESS Exp  { Janus.Less(#1 $1, #1 $2, #2 $1) }
+	| Exp EQ Exp    { Janus.Equal(#1 $1, #1 $2, #2 $1) }
+	| NOT Cond	{ Janus.Not $2 }
+	| Cond AND Cond { Janus.And(#1 $1, #1 $2, #2 $1) }
+	| Cond OR Cond  { Janus.Or(#1 $1, #1 $2, #2 $1) }
+	| LPAR Cond RPAR
+	                { $2 }
 ;
