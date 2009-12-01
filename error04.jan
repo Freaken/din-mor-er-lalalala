@@ -1,0 +1,7 @@
+// error04: LHS variable used on RHS
+
+x -> y;
+
+y += x;
+x -= x
+

@@ -1,0 +1,15 @@
+// sumdif: output sum and difference of inputs
+
+x y -> s d;
+
+call make;
+call delete
+
+procedure make 
+  s += x+y;
+  d += x-y
+
+procedure delete
+  x -= (s+d)/2;
+  y -= (s-d)/2
+

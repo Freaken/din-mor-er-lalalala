@@ -1,0 +1,7 @@
+// error15: Non-output array non-zero at end
+
+x[10] -> y;
+
+y += x[0]
+
+

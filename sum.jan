@@ -1,0 +1,18 @@
+// sum: adds the elements of an array
+// output is array of partial sums
+
+m[10] -> n[10] with i t;
+
+n[0] += m[0];
+m[0] -= n[0];
+i += 1;
+from i==1 do
+  t += n[i-1];
+  n[i] += t+m[i];
+  m[i] -= n[i]-t;  // m[i] <- 0
+  t -= n[i-1];
+  i += 1
+loop
+  skip
+until i==10;
+i -= 10

@@ -1,0 +1,17 @@
+// logic: tests logic operators
+
+x -> y;
+
+from x==15 do
+  call test
+loop
+  x -= 1
+until x==0
+
+procedure test
+  if ! (x==13 || 3<x && x<11) then
+    y += 1
+  else
+    skip
+  fi ! (x==13 || 3<x && x<11)
+

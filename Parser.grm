@@ -1,0 +1,63 @@
+
+%token <int*(int*int)> NUM
+%token <string*(int*int)> ID
+%token <(int*int)> SKIP PROCEDURE
+%token <(int*int)> PLUS MINUS ADD SUBTRACT HALF
+%token <(int*int)> LPAR RPAR
+%token <(int*int)> CALL SEMICOLON ARROW WITH
+%token <(int*int)> EOF
+
+%right SEMICOLON
+%right OR
+%right AND
+%nonassoc NOT
+%nonassoc EQ LESS
+%left PLUS MINUS
+%nonassoc HALF
+
+%start Prog
+%type <Janus.Prog> Prog
+%type <Janus.Def list> Defs
+%type <Janus.Procedure list> Procs
+%type <Janus.Stat> Stat
+%type <Janus.Exp> Exp
+%type <Janus.Lval> Lval
+
+%%
+
+Prog :
+	  Defs ARROW Defs WITH Defs SEMICOLON Stat Procs EOF
+	                { ($1,$3,$5,$7,$8) }
+	| Defs ARROW Defs SEMICOLON Stat Procs EOF
+	                { ($1,$3,[],$5,$6) }
+;
+
+Defs :	  ID Defs	{ Janus.IntVarDef $1 :: $2 }
+	|		{ [] }
+;
+
+Procs :	  PROCEDURE ID Stat Procs
+			{ (#1 $2, $3, $1) :: $4 }
+	|		{ [] }
+;
+
+Stat :	  Stat SEMICOLON Stat
+			{ Janus.Sequence ($1, $3, $2) }
+	| Lval ADD Exp	{ Janus.AddUpdate ($1, $3, $2) }
+	| Lval SUBTRACT Exp
+	                { Janus.SubUpdate ($1, $3, $2) }
+	| SKIP      	{ Janus.Skip $1 }
+	| CALL ID	{ Janus.Call (#1 $2, $1) }
+;
+
+Exp :
+	  NUM		{ Janus.Num $1 }
+	| Lval		{ Janus.LVal $1 }
+	| Exp PLUS Exp	{ Janus.Plus ($1, $3, $2) }
+	| Exp MINUS Exp	{ Janus.Minus ($1, $3, $2) }
+	| Exp HALF	{ Janus.Half ($1, $2) }
+	| LPAR Exp RPAR	{ $2 }
+;
+
+Lval :	  ID		{ Janus.IntVar $1 }
+;

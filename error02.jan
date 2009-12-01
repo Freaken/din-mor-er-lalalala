@@ -1,0 +1,9 @@
+// error02: Two identical input variables
+
+x x -> y z;
+
+y += x;
+x -= y;
+z += x;
+x -= z
+

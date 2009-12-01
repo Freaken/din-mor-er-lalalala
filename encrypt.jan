@@ -1,0 +1,28 @@
+// encrypt: Reads a key and a non-negative number x
+// and outputs the same key and an "encrypted" number
+// requires x < 2*key
+
+key x -> key1 y with j t;
+
+call encrypt;
+y += x;
+x -= y;
+key1 += key;
+key -= key1
+
+procedure encrypt
+  from j==0 do
+    t += x/2;
+    if x-t-t == 0 then // x even
+      x -= t;
+      t -= x
+    else // x odd
+      x -= t+1;
+      t -= x;
+      x += key
+    fi x<key;
+    j += 1
+  loop skip
+  until j==19;
+  j -= 19
+

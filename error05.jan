@@ -1,0 +1,7 @@
+// error05: LHS array used on RHS
+
+x[1] -> y[1];
+
+y[1] += x[1];
+x[1] -= x[1]
+

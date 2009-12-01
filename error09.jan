@@ -1,0 +1,6 @@
+// error09: Integer and array variables of same name
+
+x -> x[1];
+
+x[0] += x;
+x -= x[0]

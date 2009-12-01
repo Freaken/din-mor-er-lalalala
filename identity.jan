@@ -1,0 +1,6 @@
+// identity: Copies input to output
+
+x -> y;
+
+y += x;
+x -= y

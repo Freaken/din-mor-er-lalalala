@@ -1,0 +1,12 @@
+// reverse: Reverses the elements of an array
+
+m[10] -> n[10] with i;
+
+from i==0 do
+  n[9-i] += m[i];
+  m[i] -= n[9-i];
+  i += 1
+loop
+  skip
+until i==10;
+i -= 10

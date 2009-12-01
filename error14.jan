@@ -1,0 +1,7 @@
+// error14: Non-output variable non-zero at end
+
+x -> y;
+
+y += x
+
+

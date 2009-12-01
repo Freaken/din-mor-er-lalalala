@@ -1,0 +1,26 @@
+// fib2: Takes a number n and produces fib(n), fib(n+1) and n
+
+n -> a b n1 with t;
+
+a += 1;
+b += 1;
+call fib;
+n1 += n;
+n -= n1
+
+procedure fib
+  if n==0 then skip
+  else
+    n -= 1;
+    a += b;
+
+    // swap a and b using t as intermediate
+    t += a;   // t == a0
+    a += b-t; // a == b0
+    b += t-a; // b == a0
+    t -= b;   // t == 0
+
+    call fib;
+
+    n += 1
+  fi n==0

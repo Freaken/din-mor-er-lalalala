@@ -1,0 +1,7 @@
+// error03: Temporary variable same as input variable
+
+x -> y with x;
+
+y += x;
+x -= y
+

@@ -1,0 +1,6 @@
+// error08: Integer variable used as array
+
+x -> y;
+
+y[0] += x;
+x -= y

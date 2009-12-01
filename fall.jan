@@ -1,0 +1,13 @@
+// fall: accelerated fall, reads t and computes distance x and speed v
+
+t -> x v;
+
+call freefall
+
+procedure freefall
+  from  v == 0
+  do    skip
+  loop  t -= 1;
+  	v += 10;
+        x -= v
+  until t == 0

@@ -1,0 +1,10 @@
+// error06: Double procedure declaration
+
+x -> y;
+
+y += x;
+x -= y
+
+procedure p skip
+
+procedure p skip

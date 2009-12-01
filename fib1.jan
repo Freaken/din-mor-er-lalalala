@@ -1,0 +1,17 @@
+// fib1: Takes a number n and produces fib(n+1) and fib(n)
+
+n -> a b with t;
+
+a += 1;
+b += 1;
+
+from b==1 do
+  n -= 1;
+  a += b
+loop
+  // swap a and b using t as intermediate
+  t += a;   // t == a0
+  a += b-t; // a == b0
+  b += t-a; // b == a0
+  t -= b    // t == 0
+until n==0

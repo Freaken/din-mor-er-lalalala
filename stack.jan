@@ -1,0 +1,29 @@
+// stack: simulates a three-element stack with an array
+// Reads r and outputs r1 = r+1
+
+r -> r1 with index stack[2] t;
+
+call run;
+r1 += r;
+r -= r1
+
+procedure run
+  r += 1;
+  call push;
+  r += 2;
+  call push;
+  call pop;
+  r -= 2;
+  call pop
+
+procedure push
+  //  swap stack[index] and r
+  t += r;
+  r += stack[index]-t;
+  stack[index] += t-r;
+  t -= stack[index];
+  // end of swap
+  index += 1
+
+procedure pop
+  uncall push

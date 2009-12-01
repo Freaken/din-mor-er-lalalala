@@ -1,0 +1,12 @@
+// error12: Assertion in from-do-loop-until fails
+
+x -> y;
+
+from 0<x do
+  y += x;
+  x -= y
+loop
+  y -= x;
+  x += y
+until x==0
+

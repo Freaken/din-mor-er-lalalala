@@ -1,0 +1,704 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage[latin1]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{pslatex}
+\usepackage[danish]{babel}
+\usepackage{graphics}
+
+\title{En oversætter for Janus}
+
+\author{Godkendelsesopgave på kurset Oversættere}
+
+\date{Efterår 2009}
+
+\begin{document}
+
+%\setlength{\baselineskip}{0.95\baselineskip}
+
+\maketitle
+
+\section{Introduktion}
+
+Dette er den første del af rapportopgaven på Oversættere, efterår
+2009.  Opgaven skal løses i grupper på op til 3 personer.  Opgaven
+bliver stillet mandag d.\ 9/11 2009 og skal afleveres senest onsdag
+d.\ 16/12 2009.  Opgaven afleveres via kursushjemmesiden på Absalon.
+Brug gruppeafleveringsfunktionen i Absalon.  Alle medlemmer af gruppen
+skal på rapportforsiden angives med navn og fødselsdato.  Der er ikke
+lavet en standardforside, så lav en selv.
+
+Denne del af rapportopgaven bedømmes som godkendt / ikke godkendt.
+Godkendelse af denne opgave er (sammen med godkendelse af fire ud af
+fem ugeopgaver) en forudsætning for deltagelse i den andel del af
+rapporteksamenen, der er en karaktergivende opgave, der løses
+individuelt.  En ikke-godkendt godkendelsesopgave kan {\em ikke}
+genafleveres.
+
+\section{Om opgaven}
+
+Opgaven går ud på at implementere en oversætter for sproget Janus, som
+er beskrevet i afsnit~\ref{janus}.
+
+Som hjælp hertil gives en fungerende implementering af en delmængde af
+Janus.  I afsnit~\ref{subset} er denne delmængde beskrevet.
+
+Der findes på kursussiden en zip-fil kaldet ``G.zip'', der indeholder
+opgaveteksten, implementeringen af delmængden af Janus samt et antal
+testprogrammer med input og forventet output. Der kan blive lagt flere
+testprogrammer ud i løbet af de første uger af opgaveperioden.
+
+Det er nødvendigt at modificere følgende filer:
+ 
+\begin{description}
+
+\item[{\tt Parser.grm}] Grammatikken for Janus med parseraktioner, der
+  opbygger den abstrakte syntaks.
+
+\item[{\tt Lexer.lex}] Leksikalske definitioner for {\em tokens} i
+  Janus.
+
+\item[{\tt Type.sml}] Typechecker for Janus.
+
+\item[{\tt Compiler.sml}] Oversætter fra Janus til MIPS assembler.
+  Oversættelsen sker direkte fra Janus til MIPS uden brug af
+  mellemkode.
+
+\end{description}
+
+\noindent
+Andre moduler indgår i oversætteren, men det er ikke nødvendigt at
+ændre disse.
+
+Til oversættelse af ovennævnte moduler (og andre moduler, der ikke
+skal ændres) bruges Moscow-ML oversætteren inklusive værktøjerne
+MosML-lex og MosML-yacc.  {\tt Compiler.sml} bruger datastruktur og
+registerallokator for en delmængde af MIPS instruktionssættet.  Filen
+{\tt compile} indeholder kommandoer for oversættelse af de nødvendige
+moduler.  Der vil optræde nogle {\em warnings} fra compileren.  Disse
+kan ignoreres, men vær opmærksom på evt.\ nye fejlmeddelelser eller
+advarsler, når I retter i filerne.
+
+Til afvikling af de oversatte MIPS programmer bruges simulatoren SPIM.
+
+\subsection*{Krav til besvarelsen}
+
+Besvarelsen afleveres som en zip-fil, der indeholder rapportteksten
+(som PDF fil) og alle relevante program- og datafiler, sådan at man
+ved at pakke zip-filen ud i et ellers tomt katalog kan oversætte og
+køre oversætteren på testprogrammerne.  Dette kan f.eks.\ gøres ved,
+at I zipper hele jeres arbejdskatalog (og evt.\ underkataloger).
+
+Zip-filen afleveres via kursushjemmesiden.
+
+Rapporten skal angive alle medlemmer af gruppen med navn og
+fødselsdato.
+
+Rapporten skal indeholde en kort beskrivelse af de ændringer, der
+laves i ovenstående komponenter.
+
+For {\tt Parser.grm} skal der kort forklares hvordan grammatikken er
+gjort entydig (ved omskrivning eller brug af
+operatorpræcedenserklæringer) samt beskrivelse af eventuelle
+ikke-åbenlyse løsninger, f.eks.\ i forbindelse med opbygning af
+abstrakt syntaks. Det skal bemærkes, at alle konflikter skal fjernes
+v.h.a.\ præcedenserklæringer eller omskrivning af syntaks.  Med andre
+ord må MosML-yacc {\em ikke} rapportere konflikter i tabellen.
+
+For {\tt Type.sml} og {\tt Compiler.sml} skal kort beskrives, hvordan
+typerne checkes og kode genereres for de nye konstruktioner.  Brug
+evt.\ en form, der ligner figur~6.2 og 7.3 i {\em Basics of Compiler
+Design}.
+
+I skal ikke inkludere hele programteksterne i rapportteksten, men I
+skal inkludere de væsentligt ændrede eller tilføjede dele af
+programmerne i rapportteksten som figurer, bilag e.lign.  Hvis I
+henviser til dele af programteksten, skal disse dele inkluderes i
+rapporten.
+
+Rapporten skal beskrive hvorvidt oversættelse og kørsel af
+eksempelprogrammer (jvf.\ afsnit~\ref{eksempelprogrammer}) giver den
+forventede opførsel, samt beskrivelse af afvigelser derfra.
+
+Kendte mangler i typechecker og oversætter skal beskrives, og i det
+omfang det er muligt, skal der laves forslag til hvordan disse evt.\
+kan udbedres.
+
+Det er vigtigere at kunne køre alle eksempelprogrammerne end at
+generere effektiv kode kun for nogle af disse, så det anbefales at man
+ikke laver avancerede optimeringer før man har en fuldt fungerende
+oversætter.  Da en fungerende oversætter og en god rapport herom er
+rigeligt for godkendelse af G-opgaven, er eventuelle optimeringer af
+koden primært for jeres egen dannelses skyld.  Det skal bemærkes, at
+SPIM ikke angiver køretid eller antal udførte instruktioner, så det
+kan være svært at vurdere effekten af optimeringer.
+
+Det er i stort omfang op til jer selv at bestemme, hvad I mener er
+væsentligt at medtage i rapporten, sålænge de eksplicitte krav i dette
+afsnit er opfyldt.
+
+Rapporten må maksimalt fylde 16 sider, helst mindre, dog uden at
+udelade de eksplicitte krav såsom beskrivelser af mangler i programmet
+og væsentlige designvalg.
+
+
+\subsection{Afgrænsninger af oversætteren}
+
+Det er helt i orden, at lexer, parser, typechecker og oversætter
+stopper ved den første fundne fejl.
+
+Hovedprogrammet {\tt JC.sml} kører typecheck på programmerne inden
+oversætteren kaldes, så oversætteren kan antage, at programmerne er
+uden typefejl m.m.
+
+Det kan antages, at de oversatte programmer er små nok til, at alle
+hopadresser kan ligge i konstantfelterne i branch- og hopordrer.
+
+Hvis der bruges en hob, er det ikke nødvendigt at frigøre lager på
+hoben mens programmet kører.  Der skal ikke laves test for overløb på
+stakken eller hoben.  Den faktiske opførsel ved overløb er udefineret,
+så om der sker fejl under afvikling eller oversættelse, eller om der
+bare beregnes mærkelige værdier, er underordnet.
+
+\subsection{MosML-Lex og MosML-yacc}
+
+Beskrivelser af disse værktøjer findes i Moscow ML's Owners Manual,
+som kan hentes via kursets hjemmeside. Yderligere information samt
+installationer af systemet til Windows og Linux findes på Moscow ML's
+hjemmeside (følg link fra kursets hjemmeside, i afsnittet om
+programmel).  Desuden er et eksempel på brug af disse værktøjer
+beskrevet i en note, der kan findes i {\tt Lex+Parse.zip}, som er
+tilgængelig via kursets hjemmeside samt i kataloget\newline
+\verb`/usr/local/del1/dat-oversaet/Lex+Parse/`.
+
+
+\section{Janus\label{janus}}
+
+Janus er et eksempel på et {\em reversibelt programmeringssprog},
+dvs.\ et programmeringssprog, hvor alle sætninger kan køres både
+forlæns og baglæns.  Det betyder, at kun bijektive funktioner kan
+programmeres i sproget.  Sproget er designet på Caltech og er nærmere
+beskrevet i~\cite{YokoyamaGluck07}.  Bemærk dog, at der er små
+forskelle mellem det d{\'e}r beskrevne sprog og det, der bruges i
+denne opgave.
+
+Herunder beskrives syntaks og uformel semantik for sproget Janus og en
+kort beskrivelse af de filer, der implementerer sproget.
+
+\section{Syntaks}
+
+\begin{figure}
+\[\renewcommand{\arraystretch}{0.9}
+\begin{array}{lcl}
+Prog & \rightarrow
+     & Defs~\mbox{\tt ->}~Defs~\mbox{\tt with}~Defs~\mbox{\tt
+       ;}~Stat~Procs \\
+Prog & \rightarrow
+     & Defs~\mbox{\tt ->}~Defs~\mbox{\tt ;}~Stat~Procs \\[0.9ex]
+
+Defs & \rightarrow & {\bf id}~Defs \\
+Defs & \rightarrow & {\bf id}~\mbox{\tt [}~{\bf num}~\mbox{\tt ]}~Defs \\
+Defs & \rightarrow & \\[0.9ex]
+
+Procs & \rightarrow & \mbox{\tt procedure}~{\bf id}~Stat~Procs \\
+Procs & \rightarrow & \\[0.9ex]
+
+Stat & \rightarrow & Lval~\mbox{\tt +=}~Exp \\
+Stat & \rightarrow & Lval~\mbox{\tt -=}~Exp \\
+Stat & \rightarrow & Stat~\mbox{\tt ;}~Stat \\
+Stat & \rightarrow
+  & \mbox{\tt if}~Cond~\mbox{\tt then}~Stat~\mbox{\tt else}~Stat~\mbox{\tt fi}~Cond \\
+Stat & \rightarrow
+  & \mbox{\tt from}~Cond~\mbox{\tt do}~Stat~\mbox{\tt loop}~Stat~\mbox{\tt until}~Cond \\
+Stat & \rightarrow & \mbox{\tt call}~{\bf id} \\
+Stat & \rightarrow & \mbox{\tt uncall}~{\bf id} \\
+Stat & \rightarrow & \mbox{\tt skip} \\[0.9ex]
+
+Lval & \rightarrow & {\bf id} \\
+Lval & \rightarrow & {\bf id}~\mbox{\tt [}~Exp~\mbox{\tt ]} \\[0.9ex]
+
+Exp & \rightarrow & {\bf num} \\
+Exp & \rightarrow & Lval \\
+Exp & \rightarrow & Exp~\mbox{\tt +}~Exp \\
+Exp & \rightarrow & Exp~\mbox{\tt -}~Exp \\
+Exp & \rightarrow & Exp~\mbox{\tt /2} \\
+Exp & \rightarrow & \mbox{\tt (}~Exp~\mbox{\tt )} \\[0.9ex]
+
+Cond & \rightarrow & Exp~\mbox{\tt <}~Exp \\
+Cond & \rightarrow & Exp~\mbox{\tt ==}~Exp \\
+Cond & \rightarrow & \mbox{\tt !}~Cond \\
+Cond & \rightarrow & Cond~\mbox{\tt \&\&}~Cond \\
+Cond & \rightarrow & Cond~\mbox{\tt ||}~Cond \\
+Cond & \rightarrow & \mbox{\tt (}~Cond~\mbox{\tt )} \\[0.9ex]
+
+\end{array}
+\renewcommand{\arraystretch}{1.0}
+\]
+\caption{Syntaks for Janus\label{syntaks}}
+\end{figure}
+
+\subsection{Leksikalske og syntaktiske detaljer}
+
+\begin{itemize}
+  
+\item Et navn ({\bf id}) består af bogstaver (både store og små),
+  cifre og understreger og skal starte med et bogstav.  Bogstaver er
+  engelske bogstaver, dvs.\ fra A til Z og a til z. Nøgleord som
+  f.eks.\ {\tt if} er {\em ikke} legale navne.
+  
+\item Talkonstanter ({\bf num}) er ikke-tomme følger af cifrene 0-9.
+  Talkonstanter er begrænset til tal, der kan repræsenteres som
+  positive heltal i Moscow ML.
+
+\item Operatorerne {\tt +} og {\tt -} har samme præcedens og
+  er alle venstreassociative.
+
+\item Operatoren{\tt /2} er et enkelt symbol, så de to tegn kan ikke
+  adskilles af blanktegn og lignende.  Den binder stærkere end + og -.
+
+\item Operatoren {\tt !} binder stærkere end {\tt \&\&}, som binder
+  stærkere end {\tt ||}.  Både {\tt \&\&} og {\tt ||} er
+  højreassociative.
+
+\item Semikolon er højreassosiativ.
+
+\item Parenteser bruges blot til at gruppere med, så de forekommer
+  ikke i den abstrakte syntaks.
+
+\item Der er separate navnerum for variabler og procedurer, så en
+  procedure kan have samme navn som en variabel.  Tabelvariabler og
+  heltalsvariabler deler samme navnerum, så en tabelvariabel og en
+  heltalsvariabel kan ikke have samme navn.
+
+\item Kommentarer starter med {\tt //} og slutter ved det
+  efterfølgende linjeskift.
+
+\end{itemize}
+
+\section{Semantik}
+
+Hvor intet andet er angivet, er semantikken for de forskellige
+konstruktioner i sproget identisk med semantikken for tilsvarende
+konstruktioner i C.  For eksempel er aritmetik på 32-bit
+tokomplementtal uden detektion af {\em overflow}.
+
+Et Janus program består af erklæringer af input variable, output
+variable, temporære variable, en sætning og derefter evt.\
+procedureerklæringer.  Mellem input variablerne og output variablerne
+er der et {\tt ->}, og de temporære variabler er angivet efter
+nøgleordet {\tt with}.  Hvis der ikke er nogen temporære variabler,
+kan nøgleordet {\tt with} udelades.  Erklæringerne afsluttes med et
+semikolon.
+
+Et program køres ved at indlæse værdier for input variablerne (i den
+rækkefølge, de er erklæret), initialisere alle andre variabler og
+tabelelementer til 0, udføre sætningen og udskrive værdierne af output
+variablerne (i den rækkefølge, de er erklæret).  Ved programmets
+afslutning må kun outputvariablerne have værdier forskellig fra 0.
+Det skal verificeres, at alle andre variabler og tabeller er nul og en
+fejlmeddelelse skal udskrives hvis ikke.  Indlæsning eller udskrift af
+tabelvariabler sker ved at indlæse eller udskrive alle elementerne i
+rækkefølge.
+
+En variabelerklæring er enten en heltalsvariabel (angivet ved et navn)
+eller en tabelvariabel (angivet ved et navn efterfulgt af en konstant
+størrelse i firkantede parenteser).  Der må ikke erklæres to variabler
+med samme navn.  Dette skal checkes i typecheckeren.
+
+Tabeller er nul-indicerede, dvs.\ at en tabel erklæret som {\tt x[10]}
+har elementerne {\tt x[0]}\ldots{\tt x[9]}.  Det er udefineret, hvad
+der sker, hvis man bruger indices uden for grænserne, men der skal
+ikke i denne opgave implementeres køretidscheck for dette.
+
+En procedure består af nøgleordet {\tt procedure}, et navn på
+proceduren og en sætning, der udgør kroppen af proceduren.  Der må
+ikke erklæres to procedurer med samme navn.  Dette skal checkes i
+typecheckeren.
+
+En sætning kan antage følgende former:
+
+\begin{description}
+
+\item[Opdatering.] En opdatering består af en $Lval$ (``left value''),
+  som enten er en variabel eller et tabelelement, efterfulgt af en
+  opdateringsoperator og et udtryk.  Opdateringsoperatoren er enten
+  {\tt +=} eller {\tt -=} og har samme semantik som de tilsvarende
+  operatorer i C, dvs.\ opdatering af venstresiden med summen eller
+  differencen af ventresiden og højresiden.  Det er et krav (der skal
+  checkes i typecheckeren), at den variabel eller tabelvariabel, der
+  opdateres, ikke må forekomme i udtrykket på højresiden.
+
+\item[Sekvens.] En sætning af formen $s_1;~s_2$ udføres ved først at
+  udføre $s_1$ og derefter udføre $s_2$.
+
+\item[Betinget sætning.] En sætning af formen {\tt if}~$c_1$~{\tt
+    then}~$s_1$~{\tt else}~$s_2$~{\tt fi}~$c_2$ udføres ved at beregne
+  betingelsen $c_1$.  Hvis denne er sand, udføres sætningen $s_1$, og
+  det verificeres, at betingelsen $c_2$ er sand.  Hvis dette ikke er
+  tilfældet, skal programmet stoppes med en fejlmeddelelse.  Hvis
+  $c_1$ er falsk, udføres sætningen $s_2$ og det verificeres, at
+  betingelsen $c_2$ er falsk.  Hvis dette ikke er tilfældet, skal
+  programmet stoppes med en fejlmeddelelse. $c_1$ er altså en
+  forgreningsbetingelse, mens $c_2$ er en {\em assertion}, der skal
+  checkes.  Konstruktionen kan illustreres med følgende {\em
+    flowchart}, hvor en ruderformet kasse er en forgrening med udgange
+  t og f (sand og falsk) og en cirkel er en {\em assertion} med
+  indgange t og f.  En {\em assertion} kræver, at betingelsen
+  matcher indgangspilen, ellers meldes en køretidsfejl.
+
+\setlength{\unitlength}{1.75ex}
+\begin{picture}(16,10)
+\put(0,5){\vector(1,0){3}}
+\put(13,5){\vector(1,0){3}}
+
+\put(4.5,5){\makebox(0,0){$c_1$}}
+\put(3,5){\line(1,1){1.5}}
+\put(3,5){\line(1,-1){1.5}}
+\put(6,5){\line(-1,1){1.5}}
+\put(6,5){\line(-1,-1){1.5}}
+\put(4.5,6.5){\line(0,1){1.5}}
+\put(4.5,8){\vector(1,0){2}}
+\put(4.7,7.1){t}
+\put(4.5,3.5){\line(0,-1){1.5}}
+\put(4.5,2){\vector(1,0){2}}
+\put(4.7,2.3){f}
+
+\put(11.5,5){\makebox(0,0){$c_2$}}
+\put(11.5,5){\circle{3}}
+\put(11.7,7.1){t}
+\put(9.5,8){\line(1,0){2}}
+\put(11.5,8){\vector(0,-1){1.5}}
+\put(11.7,2.3){f}
+\put(9.5,2){\line(1,0){2}}
+\put(11.5,2){\vector(0,1){1.5}}
+
+\put(6.5,6.5){\framebox(3,3){$s_1$}}
+\put(6.5,0.5){\framebox(3,3){$s_2$}}
+\end{picture}
+
+\item[Løkke.] En sætning af formen {\tt from}~$c_1$~{\tt
+    do}~$s_1$~{\tt loop}~$s_2$~{\tt until}~$c_2$ udføres ved at
+  beregne betingelsen $c_1$.  Hvis denne er falsk, stoppes programmet
+  med en fejlmeddelelse.  Ellers udføres $s_1$ og $c_2$ beregnes.
+  Hvis $c_2$ er sand, afsluttes løkken, ellers udføres $s_2$ og $c_1$
+  beregnes.  Hvis $c_1$ er sand, stoppes programmet med en
+  fejlmeddelelse, ellers gentages løkken ved at udføre $s_1$ osv.
+  Modsat i betingede sætninger, er $c_1$ en {\em assertion}, mens
+  $c_2$ er en forgreningsbetingelse.  Konstruktionen kan illustreres
+  med følgende {\em flowchart}.
+
+\begin{picture}(16,10)
+\put(0,5){\vector(1,0){3}}
+\put(13,5){\vector(1,0){3}}
+
+\put(4.5,5){\makebox(0,0){$c_1$}}
+\put(4.5,5){\circle{3}}
+\put(4.5,6.5){\line(0,1){1.5}}
+\put(4.5,8){\vector(1,0){2}}
+\put(2,5.2){t}
+\put(4.5,2){\vector(0,1){1.5}}
+\put(4.5,2){\line(1,0){2}}
+\put(4.7,2.3){f}
+
+\put(11.5,5){\makebox(0,0){$c_2$}}
+\put(10,5){\line(1,1){1.5}}
+\put(10,5){\line(1,-1){1.5}}
+\put(13,5){\line(-1,1){1.5}}
+\put(13,5){\line(-1,-1){1.5}}
+\put(13.1,5.2){t}
+\put(9.5,8){\line(1,0){2}}
+\put(11.5,8){\vector(0,-1){1.5}}
+\put(11.7,2.3){f}
+\put(11.5,2){\vector(-1,0){2}}
+\put(11.5,2){\line(0,1){1.5}}
+
+\put(6.5,6.5){\framebox(3,3){$s_1$}}
+\put(6.5,0.5){\framebox(3,3){$s_2$}}
+\end{picture}
+
+\item[Procedurekald.] Et procedurekald har enten formen {\tt call}~$p$
+  eller {\tt uncall}~$p$, hvor $p$ er navnet på en procedure.  {\tt
+    call}~$p$ udfører $p$'s krop og returnerer derefter til lige efter
+  kaldet.  {\tt uncall}~$p$ udfører $p$'s krop {\em baglæns} og
+  returnerer derefter til lige efter kaldet.  Procedurekald kan være
+  gensidigt rekursive.
+
+\item[Skip.] En sætning af formen {\tt skip} har ingen effekt.
+
+\end{description}
+
+\noindent
+Udtryk er konstanter, variabler, tabelopslag eller en operator
+andvendt på en eller to udtryk.  Operatorer er {\tt +} (addition),
+{\tt -} (subtraktion) og {\tt /2} (halvering).  Beregning sker som af
+tilsvarende udtryk i C.
+
+Betingelser er sammenligning af udtryk med sammenligningsoperatorerne
+{\tt <} (mindre end) eller {\tt ==} (lig med) eller en logisk operator
+anvendt på et eller flere logiske udtryk.  De logiske operatorer {\tt
+  !} (negation), {\tt \&\&} (konjunktion) og {\tt ||} (disjunktion)
+har samme betydning som i C.
+
+\subsection{Baglæns udførsel af sætninger\label{baglaens}}
+
+Idet procedurer kan udføres baglæns med {\tt uncall}, skal alle
+sætninger kunne udføres baglæns.  Derfor skal der for hver procedure
+laves to oversættelser: En, der udfører procedurens krop forlæns og
+en, der udfører procedurens krop baglæns.  Oversættelse til baglæns
+udførsel af en sætning kan ske ved først at invertere sætningen og
+derefter oversætte denne normalt.  Invertering af sætninger sker ved
+funktionen $R$, som er beskrevet ved følgende regler:
+
+\[\begin{array}{lcl}
+R(lv~\mbox{\tt +=}~e) &=& lv~\mbox{\tt -=}~e \\
+R(lv~\mbox{\tt -=}~e) &=& lv~\mbox{\tt +=}~e \\
+R(s_1;~s_2) &=& R(s_2);~R(s_1) \\
+R(\mbox{\tt if}~c_1~\mbox{\tt then}~s_1~\mbox{\tt else}~s_2~\mbox{\tt fi}~c_2)
+&=& \mbox{\tt if}~c_2~\mbox{\tt then}~R(s_1)~\mbox{\tt
+  else}~R(s_2)~\mbox{\tt fi}~c_1 \\
+R(\mbox{\tt from}~c_1~\mbox{\tt do}~s_1~\mbox{\tt loop}~s_2~\mbox{\tt until}~c_2)
+&=& \mbox{\tt from}~c_2~\mbox{\tt do}~R(s_1)~\mbox{\tt
+  loop}~R(s_2)~\mbox{\tt until}~c_1 \\
+R(\mbox{\tt call}~p) &=& \mbox{\tt uncall}~p \\
+R(\mbox{\tt uncall}~p) &=& \mbox{\tt call}~p \\
+R(\mbox{\tt skip}) &=& \mbox{\tt skip} \\
+\end{array}\]
+
+\section{En delmængde af Janus\label{subset}}
+
+Den udleverede oversætter håndterer kun en delmængde af Janus.
+Begrænsningerne er som følger:
+
+\begin{itemize}
+
+\item Betingelser, {\tt if-then-else-fi} og {\tt from-do-loop-until}
+  er ikke implementeret.
+
+\item Tabeller er ikke implementeret.
+
+\item {\tt uncall} er ikke implementeret.
+
+\end{itemize}
+
+Bemærk, at filen {\tt Janus.sml} har abstrakt syntaks for hele
+sproget.
+
+\section{Abstrakt syntaks og oversætter}
+
+Filen {\tt Janus.sml} angiver datastrukturer for den abstrakte
+syntaks for programmer i Janus.  Hele programmet har type {\tt
+  Janus.Prog}.
+
+Filen {\tt JC.sml} indeholder et program, der kan indlæse, typechecke
+og oversætte et Janus-program.  Det kaldes ved at angive filnavnet for
+programmet (uden extension) på kommandolinien, f.eks. {\tt JC fib2}.
+Extension for Janus-programmer er {\tt .jan}, f.eks.\ {\tt fib2.jan}.  Når
+Janus-programmet er indlæst og checket, skrives den oversatte kode
+ud på en fil med samme navn som programmet men med extension {\tt
+  .as}. Kommandoen ``{\tt JC fib2}'' vil altså tage en kildetekst fra
+filen {\tt fib2.jan} og skrive kode ud i filen {\tt fib2.as}.
+
+Den symbolske oversatte kode kan indlæses og køres af SPIM.
+Kommandoen ``{\tt spim fib2.as}'' vil køre programmet og læse inddata
+fra standard input og skrive uddata til standard output.
+
+Checkeren er implementeret i filerne {\tt Type.sig} og {\tt
+Type.sml}.  Oversætteren er implementeret i filerne {\tt Compiler.sig}
+og {\tt Compiler.sml}.
+
+Hele oversætteren kan genoversættes (inklusive generering af lexer og
+parser) ved at skrive {\tt source compile} på kommandolinien (mens man
+er i et katalog med alle de relevante filer, inclusive {\tt compile}).
+
+
+
+\section{Eksempelprogrammer\label{eksempelprogrammer}}
+
+Der er givet en række eksempelprogrammer skrevet i Janus
+
+\begin{description}
+
+\item[{\tt identity.jan}] indlæser et tal og skriver samme tal ud.
+
+\item[{\tt sumdif.jan}] indlæser to tal og skriver deres sum og
+  differens ud.
+
+\item[{\tt fib1.jan}] indlæser et positivt tal $n$ og udskriver
+  tallene $fib(n)$ og $fib(n+1)$, hvor $fib$ er Fibonacci's funktion.
+
+\item[{\tt fib2.jan}] indlæser et positivt tal $n$ og udskriver
+  tallene $fib(n+1)$, $fib(n)$ og $n$.
+
+\item[{\tt fib3.jan}] indlæser $fib(n+1)$, $fib(n)$ og $n$ og
+  udskriver $n$.  {\tt fib3.jan} bruger samme rekursive procedure som
+  {\tt fib2.jan}, men kalder den med {\tt uncall} for at udføre den
+  baglæns.
+
+\item[{\tt fall.jan}] indlæser en tid $t$ og udskriver hastighed og
+  højde af en genstand, der falder i $t$ sekunder startende med
+  hastighed 0 og højde 0.
+
+\item[{\tt encrypt.jan}] indlæser en nøgle og et tal og udskriver
+  samme nøgle og et "`krypteret"' tal.
+
+\item[{\tt decrypt.jan}] beregner den inverse funktion til {\tt
+    encrypt.jan} ved at bruge {\tt uncall} på samme procedure.
+
+\item[{\tt logic.jan}] tester de logiske operatorer.
+
+\item[{\tt reverse.jan}] indlæser 10 tal og skriver dem ud i omvendt
+  rækkefølge.
+
+\item[{\tt sum.jan}] indlæser 10 tal og skriver summerne af de 10
+  ikke-tomme præfikser ud.
+
+\item[{\tt stack.jan}] simulerer en tre-element stak med en tabel.
+
+\end{description}
+
+\noindent
+Hvert eksempelprogram {\em
+program}{\tt .jan} skal oversættes og køres på inddata, der er givet i
+filen {\em program}{\tt .in}.  Uddata fra kørslen af et program skal
+stemme overens med det, der er givet i filen {\em program}{\tt .out}.
+Hvis der ikke er nogen {\em program}{\tt .in} fil, køres programmet
+uden inddata.
+
+Kun {\tt identity.jan} og {\tt sumdif.jan} kan oversættes med den
+udleverede oversætter; de andre programmer bruger de manglende
+sprogelementer.
+
+Der er endvidere givet et antal nummererede testprogrammer ({\tt
+  error00.jan, \ldots, error15.jan}), der indeholder diverse fejl
+eller inkonsistenser.  ({\tt error00.jan, \ldots, error09.jan})
+indeholder fejl, der skal fanges i checkeren.  Der er ikke input-
+eller outputfiler til disse programmer. ({\tt error10.jan, \ldots,
+  error15.jan}) fejler {\em assertions} under kørslen eller har
+ikke-nulstillede variabler ved afslutning.  De skal derfor kunne
+oversættes uden fejl, men skal ved kørsel med de tilhørende inputfiler
+give fejlmeddelelser, der angiver fejlenes omtrentlige position i
+programmerne.
+
+Selv om testprogrammerne kommer godt rundt i sproget, kan de på ingen
+måde siges at være en udtømmende test.  Man bør vurdere, om der er
+ting i oversætteren, der ikke er testet, og lave yderligere
+testprogrammer efter behov.
+  
+Selv om registerallokatoren ikke laver spill, er der rigeligt med
+registre til at eksempelprogrammerne kan oversættes uden spill.
+Derfor betragtes det som en fejl, hvis registerallokatoren rejser
+undtagelsen \verb`not_colourable` for et af eksempelprogrammerne.
+
+\section{Milepæle}
+
+Da opgaven først skal afleveres efter fem uger, kan man fristes til at
+udskyde arbejdet på opgaven til sidst i perioden.  Dette er en meget
+dårlig ide.  Herunder er angivet retningslinier for hvornår de
+forskellige komponenter af oversætteren bør være færdige, inklusive de
+dele af rapporten, der beskriver disse.
+
+\begin{description}
+  
+\item[Uge 47] Lexeren kan genereres og oversættes (husk at erklære de
+nye tokens i parseren).  Rapportafsnit om lexer skrives.
+  
+\item[Uge 48] Parseren kan genereres og oversættes.  Rapportafsnit om
+lexer og parser færdigt.
+  
+\item[Uge 49] Checkeren er implementeret.  Rapportafsnit om
+checker skrives.
+  
+\item[Uge 50] Oversætteren er implementeret, rapportafsnit om denne
+  skrives.
+
+\item[Uge 51] Afsluttende afprøvning og rapportskrivning, rapporten
+  afleveres om onsdagen.
+
+\end{description}
+
+\noindent
+Bemærk, at typechecker og kodegenerering er væsentligt større opgaver
+end lexer og parser.
+
+Efter hvert af de ovenstående skridt bør man genoversætte hele
+oversætteren og prøvekøre den for testprogrammerne.  De endnu ikke
+udvidede moduler kan ved oversættelse rapportere om ikke-udtømmende
+pattern-matching, og ved køretid kan de rejse undtagelsen ``Match''.
+Man kan i {\tt JC.sml} udkommentere kald til de senere faser for at
+afprøve sprogudvidelserne for de moduler (faser), der allerede er
+implementerede.
+
+Jeres instruktor vil gerne løbende læse og komme med feedback til
+afsnit af rapporten.  I skal dog regne med, at der kan gå noget tid,
+inden I får svar (så bed ikke om feedback lige før
+afleveringsfristen), og I skal ikke forvente, at et afsnit bliver læst
+igennem flere gange.
+
+\section{Vink}
+
+\begin{itemize}
+
+\item {\em Assertions} har to indgange: En, hvor betingelsen skal være
+  sand, og en, hvor den skal være falsk.  Overvej nøje, hvordan dette
+  implementeres.
+
+\item {\tt uncall} kan implementeres ved at oversætte hver procedure i
+  to udgaver: En forlæns og en baglæns.  Den baglæns udgave kan laves
+  ved at invertere kroppen (som beskrevet i afsnit~\ref{baglaens}) og
+  derefter oversætte den inverterede krop normalt.
+
+\item Tabeller har konstant størrelse, så de kan allokeres i {\tt
+    data} arealet med assemblerdirektivet {\tt .space}.  Se
+  dokumentationen af SPIM.  Bemærk, at tabeller skal initialiseres til
+  0, hvilket ikke gøres af {\tt .space}.
+
+\item Bemærk, at der ikke bruges symboltabel til variabler idet alle
+  variabler er globale, og ikke to har samme navn.  Derfor bruges
+  variablenavne uændret i den genererede kode.  Det betyder, at navne
+  på labels og temporære variabler i den genererede kode skal
+  adskilles fra variabelnavne, f.eks.\ ved at lade dem starte med
+  {\em underscore}.
+  
+\item {\bf KISS}: {\em Keep It Simple, Stupid}.  Lav ikke avancerede
+  løsninger, før I har en fungerende simpel løsning, inklusive udkast
+  til et rapportafsnit, der beskriver denne.  Udvidelser og
+  forbedringer kan derefter tilføjes og beskrives som sådan i
+  rapporten.
+  
+\item I kan antage, at læseren af rapporten er bekendt med pensum til
+  kurset, og I kan frit henvise til kursusbøger, noter og
+  opgavetekster.
+
+\item Hver gang I har ændret i et modul af oversætteren, så genoversæt
+hele oversætteren (med {\tt source compile}).  Dog kan advarsler om
+``pattern matching is not exhaustive'' i reglen ignoreres indtil alle
+moduler er udvidede.
+  
+\item Når man oversætter signaturen til den genererede parser, vil
+  {\tt mosmlc} give en ``Compliance Warning''. Denne er uden
+  betydning, og kan ignoreres.
+
+\item Når I udvider lexeren, skal I erklære de nye tokens i parseren
+med {\tt \%token} erklæringer og derefter generere parseren og
+oversætte den {\em inden} i oversætter lexeren, ellers vil I få
+typefejl.
+  
+\item I lexerdefinitionen skal enkelttegn stå i {\em backquotes} ({\tt
+    `}), {\em ikke} almindelige anførselstegn ({\tt '}), som i C eller
+    Java.
+
+\end{itemize}
+
+\begin{thebibliography}{1}
+
+\bibitem{YokoyamaGluck07}
+Tetsuo Yokoyama, Robert Gl{\"u}ck:
+\newblock A Reversible Programming Language and its Reversible Interpreter,
+\newblock PEPM 2007.
+
+\end{thebibliography}
+
+
+\end{document}
+
+

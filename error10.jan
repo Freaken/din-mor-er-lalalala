@@ -1,0 +1,12 @@
+// error10: Assertion in if-then-else-fi fails
+
+x -> y;
+
+if 0<x then
+  y += x;
+  x -= y
+else
+  y -= x;
+  x += y
+fi y==0
+

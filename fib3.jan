@@ -1,0 +1,26 @@
+// fib3: Takes fib(n), fib(n+1) and n and produces n
+
+a b n1 -> n with t;
+
+n += n1;
+n1 -= n;
+uncall fib;
+b -= 1;
+a -= 1
+
+procedure fib
+  if n==0 then skip
+  else
+    n -= 1;
+    a += b;
+
+    // swap a and b using t as intermediate
+    t += a;   // t == a0
+    a += b-t; // a == b0
+    b += t-a; // b == a0
+    t -= b;   // t == 0
+
+    call fib;
+
+    n += 1
+  fi n==0
