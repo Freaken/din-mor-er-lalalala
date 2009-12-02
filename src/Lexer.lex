@@ -23,8 +23,17 @@
          "procedure"    => Parser.PROCEDURE pos
        | "skip"         => Parser.SKIP pos
        | "call"         => Parser.CALL pos
+       | "uncall"	=> Parser.UNCALL pos
        | "with"         => Parser.WITH pos
-	      | _              => Parser.ID (s, pos)
+       | "if"		=> Parser.IF pos
+       | "then"		=> Parser.THEN pos
+       | "else"		=> Parser.ELSE pos
+       | "fi"		=> Parser.FI pos
+       | "from"		=> Parser.FROM pos
+       | "do"		=> Parser.DO pos
+       | "loop"		=> Parser.LOOP pos
+       | "until"	=> Parser.UNTIL pos
+       | _              => Parser.ID (s, pos)
 
  }
 
@@ -48,8 +57,14 @@ rule Token = parse
   | "+="                { Parser.ADD (getPos lexbuf) }
   | `(`                 { Parser.LPAR (getPos lexbuf) }
   | `)`                 { Parser.RPAR (getPos lexbuf) }
+  | `[`                 { Parser.LBRACK (getPos lexbuf) }
+  | `]`                 { Parser.RBRACK (getPos lexbuf) }
+  | "=="                { Parser.EQ (getPos lexbuf) }
+  | `<`                 { Parser.LESS (getPos lexbuf) }
+  | `!`                 { Parser.NOT (getPos lexbuf) }
+  | "&&"                { Parser.AND (getPos lexbuf) }
+  | "||"                { Parser.OR (getPos lexbuf) }
   | `;`                 { Parser.SEMICOLON (getPos lexbuf) }
   | eof                 { Parser.EOF (getPos lexbuf) }
   | _                   { lexerError lexbuf "Illegal symbol in input" }
-
 ;

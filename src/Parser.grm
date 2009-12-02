@@ -29,6 +29,7 @@
 %type <Janus.Stat> Stat
 %type <Janus.Exp> Exp
 %type <Janus.Lval> Lval
+%type <Janus.Cond> Cond
 
 %%
 
@@ -59,9 +60,9 @@ Stat :	  Stat SEMICOLON Stat
 	| CALL ID	{ Janus.Call (#1 $2, $1) }
 	| UNCALL ID	{ Janus.Uncall (#1 $2, $1) }
 	| IF Cond THEN Stat ELSE Stat FI Cond
-	                { Janus.If (#1 $2, #1 $4, #1 $6, #1 $8, #2 $1) }
+	                { Janus.If ($2, $4, $6, $8, $1) }
 	| FROM Cond DO Stat LOOP Stat UNTIL Cond
-	                { Janus.Loop (#1 $2, #1 $4, #1 $6, #1 $8, #2 $1) }
+	                { Janus.Loop ($2, $4, $6, $8, $1) }
 ;
 
 Exp :
@@ -75,13 +76,13 @@ Exp :
 
 Lval :	  ID		{ Janus.IntVar $1 }
 	| ID LBRACK Exp RBRACK
-	                { Janus.ArrayIndex(#1 $1, #1 $3, #2 $1) }
+	                { Janus.ArrayIndex(#1 $1, $3, #2 $1) }
 
-Cond :	  Exp LESS Exp  { Janus.Less(#1 $1, #1 $2, #2 $1) }
-	| Exp EQ Exp    { Janus.Equal(#1 $1, #1 $2, #2 $1) }
-	| NOT Cond	{ Janus.Not $2 }
-	| Cond AND Cond { Janus.And(#1 $1, #1 $2, #2 $1) }
-	| Cond OR Cond  { Janus.Or(#1 $1, #1 $2, #2 $1) }
+Cond :	  Exp LESS Exp  { Janus.Less($1, $3, $2) }
+	| Exp EQ Exp    { Janus.Equal($1, $3, $2) }
+	| NOT Cond	{ Janus.Not($2, $1) }
+	| Cond AND Cond { Janus.And($1, $3, $2) }
+	| Cond OR Cond  { Janus.Or($1, $3, $2) }
 	| LPAR Cond RPAR
 	                { $2 }
 ;
