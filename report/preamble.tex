@@ -1,0 +1,66 @@
+\documentclass[11pt,fleqn]{article} % DOKUMENTKLASSE. Mulighederne er bl.a. article, report, book, memoir                        %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%          PAKKER DER INDLÆSES         %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage[a4paper, hmargin={2.8cm, 2.8cm}, vmargin={2.8cm, 2.8cm}]{geometry}      % Geometri-pakke: Styrer bl.a. maginer       %
+\usepackage{amssymb}                       % Matematiske tegn og skrifttyper, bl.a. \mathbb{}                                    %
+\usepackage{amsthm}                        % Opsætning der gør sætninger og beviser nemmere, se amsthdoc.pdf                     %
+\usepackage[utf8]{inputenc}                % Lidt kodning så der ikke kommer problemer ved visse konverteringer                  %
+\usepackage{amsmath}                       % Matematiske tegn                                                                    %
+\usepackage{listingsutf8}                  % Listings. Indsætter kildekode pænt.                                                 %
+\usepackage{courier}                       % Courierskrifttype. Slankere skrivemaskineskrift i verbatim og listings              %
+\usepackage{algorithmic}                   % Miljøet algoritmic                                                                  %
+\usepackage{multicol}                      % Kolonner                                                                            %
+%\usepackage[babel, lille, nat, da, farve]{ku-forside}   % KU-forside med logoer                                                 %
+\usepackage[babel, titelside, nat, da, farve]{ku-forside}   % KU-forside med logoer                                              %
+\def\HyperLinks{                           % Hyperlinks-pakke, der laver referencer til links og tillader links til www          %
+\usepackage[pdftitle={\TITEL},pdfauthor={\FORFATTER}, %             %  Der er foretaget et lille trick så pakken indlæses efter  %
+pdfsubject={\UNDERTITEL}, linkbordercolor={0.8 0.8 0.8}]{hyperref}} %  titlen defineres.                                         %
+
+\usepackage{lastpage}
+\usepackage{fancyhdr}
+\usepackage{array}
+\usepackage{multirow}
+%\usepackage[pdftex]{graphicx}
+%\usepackage[fleqn]{amsmath}
+%\usepackage[T1]{fontenc}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% MINI-MANUAL TIL ku-forside PAKKEN:                                           %
+%                                                                              %
+% Sprogmuligheder:     da, en                                                  %
+% babel loader babelpakken, med det valgte sprog                               %
+% Fakultetsmuligheder: farma, hum, jur, ku, life, nat, samf, sund, teo         %
+% Farvemuligheder:     sh, farve                                               %
+% Forsidemuligheder: lille, stor, titelside                                    %
+%      titelside er identisk med designet på ku.dk/designmanual                %
+%      lille er giver et lille logo sammen med titlen på den første side       %
+%      stor er giver et stort logo sammen med titlen på den første side        %
+%                                                                              %
+% Default er [da,nat,farve,titelside]                                          %
+%                                                                              %
+% Ex. \usepackage[babel, lille, jur, sh, en]{ku-forside} giver et lille logo i %
+% sorthvid for  juridisk fakultet og loader babelpakken med engelsk som sprog. %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\opgave{G-opgaven i oversættere}
+\forfatter{Simon Shine, Kristoffer Søholm og Mathias Svensson}
+\dato{Onsdag den 16. december 2009 23:55}
+\vejleder{}
+
+\titel{Oversætter fra sproget Janus}
+\undertitel{til blandt andet Mips}
+\HyperLinks % Henter hyperlinks-pakke og sætter pdf-titel mm. til at svare til de just definerede
+
+\pagestyle{fancy}
+\lhead{\footnotesize Oversættere}
+\chead{\footnotesize G-opgave}
+\rhead{\footnotesize Simon Shine \\ Kristoffer Søholm \\ Mathias Svensson}
+\cfoot{\footnotesize Side \thepage \ af \pageref{LastPage}}
+
+
+\setlength\parindent{0in}
+\setcounter{secnumdepth}{0}
+\setcounter{tocdepth}{1}
+%\mathcode`\*"8000{\catcode`\*\active\gdef*{\cdot}}
+
