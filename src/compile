@@ -1,3 +1,4 @@
+#!/bin/sh
 mosmlc -c Mips.sml
 mosmlc -c RegAlloc.sig RegAlloc.sml
 mosmlc -c Janus.sml

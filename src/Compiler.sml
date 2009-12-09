@@ -75,7 +75,7 @@ struct
   (* read input variables *)
   and makeReads [] = []
     | makeReads (Janus.IntVarDef (x,_)::defs) =
-        [Mips.LI ("2","5"), (* read_int syscall *)
+        [Mips.LI ("2","5"), (* 5 = read_int syscall *)
 	     Mips.SYSCALL,
      	 Mips.MOVE (x,"2")]
 	@ makeReads defs
