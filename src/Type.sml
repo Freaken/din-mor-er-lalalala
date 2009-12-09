@@ -22,20 +22,20 @@ struct
     | Janus.LVal lv =>
        (case lv of
            Janus.IntVar (x,p) =>
-	     (case lookup x vtable of
+             (case lookup x vtable of
                SOME Integer =>
                  if x=avoid
                  then raise Error ("LHS variable used on RHS",p)
-	             else ()
-	      | _ => raise Error ("array variable used as integer",p))
+                 else ()
+              | _ => raise Error ("array variable used as integer",p))
         |  Janus.ArrayIndex (x,e,p) =>
             (checkExp e vtable avoid;
-	        (case lookup x vtable of
+                (case lookup x vtable of
                   SOME (Array _) =>
                     if x=avoid
                     then raise Error ("LHS variable used on RHS",p)
-	                else ()
-	            | _ => raise Error ("integer variable used as array",p)))
+                    else ()
+                    | _ => raise Error ("integer variable used as array",p)))
        )
     | Janus.Plus (e1,e2,pos) =>
        (checkExp e1 vtable avoid; checkExp e2 vtable avoid)
@@ -62,7 +62,7 @@ struct
              (case lookup x vtable of
                SOME Integer =>
                  checkExp e vtable x
-	         | _ => raise Error ("array variable used as integer",p))
+             | _ => raise Error ("array variable used as integer",p))
         |  Janus.ArrayIndex (x,e1,p) =>
              (checkExp e1 vtable "";
              (case lookup x vtable of
@@ -76,7 +76,7 @@ struct
              (case lookup x vtable of
                SOME Integer =>
                  checkExp e vtable x
-	      | _ => raise Error ("array variable used as integer",p))
+             | _ => raise Error ("array variable used as integer",p))
         |  Janus.ArrayIndex (x,e1,p) =>
              (checkExp e1 vtable "";
              (case lookup x vtable of
@@ -97,28 +97,28 @@ struct
     | Janus.Skip pos => ()
     | Janus.Call (p,pos) =>
         if List.exists (fn q=>q=p) pnames
-	    then ()
-	    else raise Error ("Unknown procedure "^p,pos)
+        then ()
+        else raise Error ("Unknown procedure "^p,pos)
     | Janus.Uncall (p,pos) =>
         if List.exists (fn q=>q=p) pnames
-	    then ()
-	    else raise Error ("Unknown procedure "^p,pos)
+        then ()
+        else raise Error ("Unknown procedure "^p,pos)
 
   fun checkDefs [] vtable = vtable
     | checkDefs (Janus.IntVarDef (x,pos)::defs) vtable =
         (case lookup x vtable of
-	   NONE => checkDefs defs ((x,Integer)::vtable)
-	 | SOME _ => raise Error ("Multiple declaration of "^x,pos))
+           NONE => checkDefs defs ((x,Integer)::vtable)
+         | SOME _ => raise Error ("Multiple declaration of "^x,pos))
     | checkDefs (Janus.ArrayVarDef (x,size,pos)::defs) vtable =
         (case lookup x vtable of
-	   NONE => checkDefs defs ((x,Array size )::vtable)
-	 | SOME _ => raise Error ("Multiple declaration of "^x,pos))
+           NONE => checkDefs defs ((x,Array size )::vtable)
+         | SOME _ => raise Error ("Multiple declaration of "^x,pos))
 
   fun getProcs [] pnames = pnames
     | getProcs ((p,s,pos)::procs) pnames =
         if List.exists (fn q=>q=p) pnames
-	then raise Error ("Multiply declared procedure "^p,pos)
-	else getProcs procs (p::pnames)
+        then raise Error ("Multiply declared procedure "^p,pos)
+        else getProcs procs (p::pnames)
 
   fun checkProcs [] vtable pnames = ()
     | checkProcs ((p,s,pos)::procs) vtable pnames =
