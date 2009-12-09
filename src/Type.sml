@@ -110,9 +110,11 @@ struct
            NONE => checkDefs defs ((x,Integer)::vtable)
          | SOME _ => raise Error ("Multiple declaration of "^x,pos))
     | checkDefs (Janus.ArrayVarDef (x,size,pos)::defs) vtable =
-        (case lookup x vtable of
-           NONE => checkDefs defs ((x,Array size )::vtable)
-         | SOME _ => raise Error ("Multiple declaration of "^x,pos))
+        if size = 0 then raise Error ("Zero-sized array",pos)
+        else
+          (case lookup x vtable of
+             NONE => checkDefs defs ((x,Array size )::vtable)
+           | SOME _ => raise Error ("Multiple declaration of "^x,pos))
 
   fun getProcs [] pnames = pnames
     | getProcs ((p,s,pos)::procs) pnames =
