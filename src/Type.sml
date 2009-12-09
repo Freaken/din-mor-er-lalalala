@@ -86,23 +86,23 @@ struct
         )
     | Janus.If (c1,s1,s2,c2,pos) =>
         (
-         checkCond c1 vtable   ; checkStat s1 vtable "";
-         checkStat s2 vtable ""; checkCond c2 vtable
+         checkCond c1 vtable       ; checkStat s1 vtable pnames;
+         checkStat s2 vtable pnames; checkCond c2 vtable
         )
     | Janus.Loop (c1,s1,s2,c2,pos) =>
         (
-         checkCond c1 vtable   ; checkStat s1 vtable "";
-         checkStat s2 vtable ""; checkCond c2 vtable
+         checkCond c1 vtable       ; checkStat s1 vtable pnames;
+         checkStat s2 vtable pnames; checkCond c2 vtable
         )
     | Janus.Skip pos => ()
     | Janus.Call (p,pos) =>
         if List.exists (fn q=>q=p) pnames
 	    then ()
 	    else raise Error ("Unknown procedure "^p,pos)
-    | Janus.Uncall (p,pos) => ()
-       (* if List.exists (fn q=>q=p) pnames
+    | Janus.Uncall (p,pos) =>
+        if List.exists (fn q=>q=p) pnames
 	    then ()
-	    else raise Error ("Unknown procedure "^p,pos)*)
+	    else raise Error ("Unknown procedure "^p,pos)
 
   fun checkDefs [] vtable = vtable
     | checkDefs (Janus.IntVarDef (x,pos)::defs) vtable =

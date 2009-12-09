@@ -54,14 +54,14 @@ struct
          Mips.LI ("2","10"),      (* syscall control = 10 *)
          Mips.SYSCALL,            (* exit *)
          Mips.LABEL "_NonZero_",  (* code for reporting nonzero variables *)
-	 Mips.LA ("4","_NonZeroString_"),
-	 Mips.LI ("2","4"), Mips.SYSCALL, (* print string *)
-	 Mips.J "_stop_",
+         Mips.LA ("4","_NonZeroString_"),
+         Mips.LI ("2","4"), Mips.SYSCALL, (* print string *)
+         Mips.J "_stop_",
          Mips.DATA "",
-	 Mips.LABEL "_cr_",       (* carriage return string *)
-	 Mips.ASCIIZ "\n",
-	 Mips.LABEL "_NonZeroString_",
-	 Mips.ASCIIZ "Nonzero non-output variable at end\n"]
+	     Mips.LABEL "_cr_",       (* carriage return string *)
+	     Mips.ASCIIZ "\n",
+	     Mips.LABEL "_NonZeroString_",
+	     Mips.ASCIIZ "Nonzero non-output variable at end\n"]
          (* CODE AND STRINGS FOR REPORTING ASSERTION FAILURES SHOULD BE ADDED *)
     end
 
@@ -76,8 +76,8 @@ struct
   and makeReads [] = []
     | makeReads (Janus.IntVarDef (x,_)::defs) =
         [Mips.LI ("2","5"), (* read_int syscall *)
-	 Mips.SYSCALL,
-	 Mips.MOVE (x,"2")]
+	     Mips.SYSCALL,
+     	 Mips.MOVE (x,"2")]
 	@ makeReads defs
     | makeReads (Janus.ArrayVarDef (x,size,_)::defs) =
         [] (* TO BE ADDED *)
@@ -107,10 +107,10 @@ struct
   and makeWrites [] = []
     | makeWrites (Janus.IntVarDef (x,_)::defs) =
         [Mips.MOVE ("4",x),
-	 Mips.LI ("2","1"), (* write_int syscall *)
-	 Mips.SYSCALL,
-	 Mips.LA ("4","_cr_"),
-	 Mips.LI ("2","4"), Mips.SYSCALL (* print CR *)]
+	     Mips.LI ("2","1"), (* write_int syscall *)
+    	 Mips.SYSCALL,
+    	 Mips.LA ("4","_cr_"),
+    	 Mips.LI ("2","4"), Mips.SYSCALL (* print CR *)]
 	@ makeWrites defs
     | makeWrites (Janus.ArrayVarDef (x,size,_)::defs) =
         []  (* TO BE ADDED *)
@@ -185,8 +185,8 @@ struct
         [] (* TO BE ADDED *)
     | Janus.Call (proc,pos) =>
         [Mips.ADDI (SP,SP,"-4"), (* push old return address *)
-	 Mips.SW (RA,SP,"0"),
-	 Mips.JAL ("_forward_"^proc,vars)] (* and JAL to procedure *)
+	     Mips.SW (RA,SP,"0"),
+	     Mips.JAL ("_forward_"^proc,vars)] (* and JAL to procedure *)
 	(* all global variables are preserved *)
     | Janus.Uncall (proc,pos) =>
         [] (* TO BE ADDED *)
