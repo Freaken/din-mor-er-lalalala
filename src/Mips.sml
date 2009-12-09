@@ -9,6 +9,7 @@ datatype mips
  | GLOBL of string
  | TEXT of string
  | DATA of string
+ | ALIGN of string
  | SPACE of string
  | ASCII of string
  | ASCIIZ of string
@@ -54,6 +55,7 @@ fun pp_mips inst
    | GLOBL s => "\t.globl\t" ^ s
    | TEXT s => "\t.text\t" ^ s
    | DATA s => "\t.data\t" ^ s
+   | ALIGN s => "\t.align\t" ^ s
    | SPACE s => "\t.space\t" ^ s
    | ASCII s => "\t.ascii\t\"" ^ String.toCString s ^"\""
    | ASCIIZ s => "\t.asciiz\t\"" ^ String.toCString s ^"\""

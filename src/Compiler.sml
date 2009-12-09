@@ -83,7 +83,8 @@ struct
   and makeArraySpace [] = []
     | makeArraySpace (Janus.IntVarDef _ :: defs) = makeArraySpace defs
     | makeArraySpace (Janus.ArrayVarDef (x,size,_) :: defs) =
-        [Mips.LABEL ("_array_" ^ x),
+        [Mips.ALIGN "2",
+         Mips.LABEL ("_array_" ^ x),
          Mips.SPACE (Int.toString(size*4))]
         @ makeArraySpace defs
 
@@ -113,7 +114,7 @@ struct
          
          Mips.LI ("2", "5"),
          Mips.SYSCALL,
-         Mips.SW(arrayindex, "2", "0"),
+         Mips.SW("2", arrayindex, "0"),
 
          Mips.ADDI(countdown, countdown, "-1"),
          Mips.ADDI(arrayindex, arrayindex, "4"),
@@ -138,7 +139,7 @@ struct
          Mips.LI (countdown, Int.toString(size)),
          Mips.LABEL startlabel,
          
-         Mips.SW(arrayindex, "0", "0"),
+         Mips.SW("0", arrayindex, "0"),
 
          Mips.ADDI(countdown, countdown, "-1"),
          Mips.ADDI(arrayindex, arrayindex, "4"),
@@ -197,6 +198,8 @@ struct
          Mips.LW("4", arrayindex, "0"),
          Mips.LI ("2", "1"),
          Mips.SYSCALL,
+         Mips.LA ("4","_cr_"),
+         Mips.LI ("2","4"), Mips.SYSCALL, (* print CR *)
 
          Mips.ADDI(countdown, countdown, "-1"),
          Mips.ADDI(arrayindex, arrayindex, "4"),
@@ -264,7 +267,8 @@ struct
                                Mips.J l2]
         | Janus.Less(e1, e2, p)  => compileExp e1 exp1 @
                               compileExp e2 exp2 @
-                              [Mips.BEQ(exp1, exp2, l1),
+                              [Mips.SLT(exp1, exp1, exp2),
+                               Mips.BNE(exp1, "0", l1),
                                Mips.J l2]
         | Janus.Not(c1, p)     => compileCond c1 l2 l1 (* Switch-a-roo *)
         | Janus.And(c1, c2, p) =>
