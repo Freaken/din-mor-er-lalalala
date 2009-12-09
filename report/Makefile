@@ -1,6 +1,6 @@
 GRAPHS=
 TARGET=report.pdf
-TEXFILES=preamble.tex del1.tex
+TEXFILES=preamble.tex lex.tex parse.tex compile.tex
 HELPFILES=
 
 all: $(TARGET)
