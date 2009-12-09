@@ -26,14 +26,31 @@ struct
                SOME Integer =>
                  if x=avoid
                  then raise Error ("LHS variable used on RHS",p)
-	         else ()
+	             else ()
 	      | _ => raise Error ("array variable used as integer",p))
-        |  Janus.ArrayIndex (x,e,p) => ()) (* TO BE ADDED *)
+        |  Janus.ArrayIndex (x,e,p) =>
+            (checkExp e vtable avoid;
+	        (case lookup x vtable of
+                  SOME (Array _) =>
+                    if x=avoid
+                    then raise Error ("LHS variable used on RHS",p)
+	                else ()
+	            | _ => raise Error ("integer variable used as array",p)))
+       )
     | Janus.Plus (e1,e2,pos) =>
        (checkExp e1 vtable avoid; checkExp e2 vtable avoid)
     | Janus.Minus (e1,e2,pos) =>
        (checkExp e1 vtable avoid; checkExp e2 vtable avoid)
     | Janus.Half (e1,pos) => checkExp e1 vtable avoid
+
+  (* Check condition *)
+  fun checkCond c vtable =
+    case c of
+         Janus.Equal(e1,e2,p) => (checkExp e1 vtable ""; checkExp e2 vtable "")
+       | Janus.Less (e1,e2,p) => (checkExp e1 vtable ""; checkExp e2 vtable "")
+       | Janus.Not  (c1,p)    => (checkCond c1 vtable)
+       | Janus.And  (c1,c2,p) => (checkCond c1 vtable; checkCond c2 vtable)
+       | Janus.Or   (c1,c2,p) => (checkCond c1 vtable; checkCond c2 vtable)
 
   fun checkStat s vtable pnames =
     case s of
@@ -45,8 +62,14 @@ struct
              (case lookup x vtable of
                SOME Integer =>
                  checkExp e vtable x
-	      | _ => raise Error ("array variable used as integer",p))
-        |  Janus.ArrayIndex (x,e1,p) => ())  (* TO BE ADDED *)
+	         | _ => raise Error ("array variable used as integer",p))
+        |  Janus.ArrayIndex (x,e1,p) =>
+             (checkExp e1 vtable "";
+             (case lookup x vtable of
+               SOME (Array _) =>
+                 checkExp e vtable x
+             | _ => raise Error ("integer variable used as array",p)))
+        )
     | Janus.SubUpdate (lv,e,pos) =>
         (case lv of
            Janus.IntVar (x,p) =>
@@ -54,15 +77,32 @@ struct
                SOME Integer =>
                  checkExp e vtable x
 	      | _ => raise Error ("array variable used as integer",p))
-        |  Janus.ArrayIndex (x,e1,p) => ())  (* TO BE ADDED *)
-    | Janus.If (c1,s1,s2,c2,pos) => ()  (* TO BE ADDED *)
-    | Janus.Loop (c1,s1,s2,c2,pos) => ()  (* TO BE ADDED *)
+        |  Janus.ArrayIndex (x,e1,p) =>
+             (checkExp e1 vtable "";
+             (case lookup x vtable of
+               SOME (Array _) =>
+                 checkExp e vtable x
+             | _ => raise Error ("integer variable used as array",p)))
+        )
+    | Janus.If (c1,s1,s2,c2,pos) =>
+        (
+         checkCond c1 vtable   ; checkStat s1 vtable "";
+         checkStat s2 vtable ""; checkCond c2 vtable
+        )
+    | Janus.Loop (c1,s1,s2,c2,pos) =>
+        (
+         checkCond c1 vtable   ; checkStat s1 vtable "";
+         checkStat s2 vtable ""; checkCond c2 vtable
+        )
     | Janus.Skip pos => ()
     | Janus.Call (p,pos) =>
         if List.exists (fn q=>q=p) pnames
-	then ()
-	else raise Error ("Unknown procedure "^p,pos)
-    | Janus.Uncall (p,pos) => ()  (* TO BE ADDED *)
+	    then ()
+	    else raise Error ("Unknown procedure "^p,pos)
+    | Janus.Uncall (p,pos) => ()
+       (* if List.exists (fn q=>q=p) pnames
+	    then ()
+	    else raise Error ("Unknown procedure "^p,pos)*)
 
   fun checkDefs [] vtable = vtable
     | checkDefs (Janus.IntVarDef (x,pos)::defs) vtable =
@@ -70,7 +110,9 @@ struct
 	   NONE => checkDefs defs ((x,Integer)::vtable)
 	 | SOME _ => raise Error ("Multiple declaration of "^x,pos))
     | checkDefs (Janus.ArrayVarDef (x,size,pos)::defs) vtable =
-        checkDefs defs vtable (* TO BE MODIFIED *)
+        (case lookup x vtable of
+	   NONE => checkDefs defs ((x,Array size )::vtable)
+	 | SOME _ => raise Error ("Multiple declaration of "^x,pos))
 
   fun getProcs [] pnames = pnames
     | getProcs ((p,s,pos)::procs) pnames =
