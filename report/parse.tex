@@ -1,0 +1,58 @@
+\section{Parser}
+Tokens were added with their corresponding type. Token types have constructors
+\verb+of int*int+ except for tokens \verb+NUM+ and \verb+ID+ that are
+\verb+of int*(int*int)+ and \verb+of string*(int*int)+, respectively. These
+numbers denote position (line, column) for debugging purposes.
+
+Ambiguity is resolved through operator precedence cf. \cite[ch. 18.2.2, p.
+33]{mosowner}.  That is, precedence between syntactic elements of same
+associativity is handled by the order in which they are listed, highest
+precedence at the bottom.
+
+Productions described in the Janus grammar are added. In particular, the
+following:
+
+\begin{itemize}
+  \item Array definitions (for declaring array variables as input, intermediate
+        and output):
+\begin{verbatim}
+Defs : ID Defs      { Janus.IntVarDef $1 :: $2 }
+     | ID LBRACK NUM RBRACK Defs
+                    { Janus.ArrayVarDef (#1 $1, #1 $3, #2 $1) :: $5 }
+     |              { [] }
+\end{verbatim}
+  \item Calling and uncalling statements:
+\begin{verbatim}
+Stat : Stat SEMICOLON Stat  { Janus.Sequence ($1, $3, $2) }
+     | Lval ADD Exp         { Janus.AddUpdate ($1, $3, $2) }
+     | Lval SUBTRACT Exp    { Janus.SubUpdate ($1, $3, $2) }
+     | SKIP                 { Janus.Skip $1 }
+     | CALL ID              { Janus.Call (#1 $2, $1) }
+     | UNCALL ID            { Janus.Uncall (#1 $2, $1) }
+     | IF Cond THEN Stat ELSE Stat FI Cond
+                            { Janus.If ($2, $4, $6, $8, $1) }
+     | FROM Cond DO Stat LOOP Stat UNTIL Cond
+                            { Janus.Loop ($2, $4, $6, $8, $1) }
+\end{verbatim}
+  \item Left-side values for assignments (using the \verb!+=! and \verb!-=!
+        operators):
+\begin{verbatim}
+Lval : ID                   { Janus.IntVar $1 }
+     | ID LBRACK Exp RBRACK { Janus.ArrayIndex(#1 $1, $3, #2 $1) }
+\end{verbatim}
+  \item Conditions:
+\begin{verbatim}
+Cond : Exp LESS Exp     { Janus.Less($1, $3, $2) }
+     | Exp EQ Exp       { Janus.Equal($1, $3, $2) }
+     | NOT Cond         { Janus.Not($2, $1) }
+     | Cond AND Cond    { Janus.And($1, $3, $2) }
+     | Cond OR Cond     { Janus.Or($1, $3, $2) }
+     | LPAR Cond RPAR   { $2 }
+\end{verbatim}
+\end{itemize}
+
+The parser-syntactic methods used here are primarily: using \verb+$1+,
+\verb+$2+, \ldots to refer to enumerated tokens of a production and \verb+#1+,
+\verb+#2+, \ldots to refer to the Standard ML macro-functions Also, constructing
+values recursively by referring to an enumeration that points to a non-terminal
+(as seen in \verb+Defs+.)

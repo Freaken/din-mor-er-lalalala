@@ -1,0 +1,9 @@
+\section{Lexer}
+The missing lexical tokens were generated either directly by regular expression
+rules (\verb+[+, \verb+]+, \verb+==+, \verb+<+, \verb+!+, \verb+&&+ and
+\verb+||+), or as return values from the \verb+keyword+ function that gathers
+all possible tokens matching the regular expression
+\verb+[a-zA-Z][a-zA-Z0-9]*+. This simplifies separation of keywords from
+identifiers which otherwise share the same namespace. Keywords thus get
+precedence over identifiers of similar names, making them ``reserved''.
+
