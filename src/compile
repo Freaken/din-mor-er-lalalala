@@ -1,4 +1,6 @@
 #!/bin/sh
+export PATH="$PATH:~/mosml/bin"
+
 mosmlc -c Mips.sml
 mosmlc -c RegAlloc.sig RegAlloc.sml
 mosmlc -c Janus.sml

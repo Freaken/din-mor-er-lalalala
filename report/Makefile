@@ -3,7 +3,10 @@ TARGET=report.pdf
 TEXFILES=preamble.tex lex.tex parse.tex compile.tex
 HELPFILES=
 
-all: $(TARGET)
+all:
+	cd ..; make report
+
+report: $(TARGET)
 
 $(TARGET): $(GRAPHS) $(TEXFILES) $(HELPFILES) Makefile
 
