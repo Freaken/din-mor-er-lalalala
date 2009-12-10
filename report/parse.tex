@@ -53,6 +53,6 @@ Cond : Exp LESS Exp     { Janus.Less($1, $3, $2) }
 
 The parser-syntactic methods used here are primarily: using \verb+$1+,
 \verb+$2+, \ldots to refer to enumerated tokens of a production and \verb+#1+,
-\verb+#2+, \ldots to refer to the Standard ML macro-functions Also, constructing
-values recursively by referring to an enumeration that points to a non-terminal
-(as seen in \verb+Defs+.)
+\verb+#2+, \ldots to refer to the Standard ML polymorphic functions. Also,
+constructing values recursively by referring to an enumeration that points to a
+non-terminal (as seen in \verb+Defs+.)
