@@ -1,6 +1,7 @@
 \section{Type check}
 
-Pseudo-code for type check
+\subsection{$Check_{Exp}$}
+
 \begin{verbatim}
 checkExp(Exp, vtable, avoid) = case Exp of
     num => ok
@@ -27,6 +28,8 @@ checkExp(Exp, vtable, avoid) = case Exp of
   | Exp1 `/2` =>
            checkExp(Exp1, vtable, avoid)
 \end{verbatim}
+
+\subsection{$Check_{Stat}$}
 
 \begin{verbatim}
 checkStat(Stat, vtable, pnames) = case Stat of
@@ -59,8 +62,38 @@ checkStat(Stat, vtable, pnames) = case Stat of
   | Skip => ok
   | Call pname
   | Uncall pname =>
-           if lookup(pnames, pname) is unbound
+           v := lookup(pnames, pname)
+           if v is unbound
              then error (Unknown procedure: pname)
              else ok
-
 \end{verbatim}
+
+\subsection{$Check_{Cond}$}
+
+\begin{verbatim}
+checkCond(Cond, vtable) = case Cond of
+    Exp1 `==` Exp2
+  | Exp1 `<`  Exp2 =>
+           checkExp(Exp1, vtable, none)
+           checkExp(Exp2, vtable, none)
+  | `!` Cond1 => checkCond(Cond1, vtable)
+  | Cond1 `&&` Cond2
+  | Cond1 `||` Cond2 =>
+           checkCond(Cond1, vtable)
+           checkCond(Cond2, vtable)
+\end{verbatim}
+
+\subsection{$Check_{Defs}$}
+
+\begin{verbatim}
+checkDefs(Defs, vtable) =
+           for each Def in Defs
+             v := lookup(name(Def), vtable)
+             if v is bound
+               then error (Multiple declarations of: name(v))
+               else
+             if type(v) is array and size = 0
+               then error (Zero-sized array: name(v))
+               else ok
+\end{verbatim}
+
