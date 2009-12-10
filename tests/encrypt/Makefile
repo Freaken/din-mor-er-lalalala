@@ -1,5 +1,6 @@
 NAME=encrypt
 
-all: standardtest
+$(NAME).log: $(NAME).standard.log
+	cp $(NAME).standard.log $(NAME).log
 
 include ../Makefile.template

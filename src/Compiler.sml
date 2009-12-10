@@ -99,9 +99,9 @@ struct
   and makeReads [] = []
     | makeReads (Janus.IntVarDef (x,_)::defs) =
         [Mips.LI ("2","5"), (* 5 = read_int syscall *)
-	     Mips.SYSCALL,
-     	 Mips.MOVE (x,"2")]
-	@ makeReads defs
+         Mips.SYSCALL,
+         Mips.MOVE (x,"2")]
+        @ makeReads defs
     | makeReads (Janus.ArrayVarDef (x,size,_)::defs) =
       let
         val startlabel = "_readstart_" ^ newName()

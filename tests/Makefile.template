@@ -1,41 +1,76 @@
+# Denne fil bliver inkluderet i alle Makefiles'ene i de enkelte testmapper
+
+# Den eneste opgave, som den egentlige Makefiler har er, at definere navn,
+# at definere hvordan $(NAME).log laves (og hvad den afhænger af), samt at
+# inkludere denne fil.
+
+
+# Rare variable at have
 JC = ../../src/JC
 SPIM = spim -file
 
 
-.PHONY : all clean standardtest $(NAME).jan
 
-standardtest: $(NAME).standard.log cleantmp
-	cp $(NAME).log log
+# Hovedfilen er altid $(NAME).log
+all: $(NAME).log
 
+# Tjekker om JC findes, for ellers giver det nogle ret underlige fejl
+precheck:
+	if ! [ -e $(JC) ]; then \
+		echo "JC findes ikke. Kør make på src mappen"; \
+		exit 0; \
+	fi
+
+# Standardtest
+#
+# - Kompilerer filen (og gemmer loggen som $*.compile.log)
+# - Kører den kompilerede filer og gemmer outputtet i $*.run.log
+# - Tjekker om det kørte svarer til hvad der er i $*.out
+# - Laver en $*.standard.log, som enten indeholder "fail" eller "ok"
+#
+#   Denne test kan også bruges, hvis der skulle være fejl i køretid, så
+#   indsæt bare fejlmeddelelsen i $*.out
 %.standard.log: %.as
-	$(SPIM) $*.as < $*.in | tail -n+6 > $*.actual.out
-	echo -n > $*.log
-	awk 'BEGIN {printf substr("$*............................",1,28)}' >> $*.log
-	if diff $*.out $*.actual.out > /dev/null; then \
+	$(SPIM) $*.as < $*.in | tail -n+6 > $*.run.log
+	awk 'BEGIN {printf substr("$*............................",1,28)}' > $*.standard.log
+	if diff $*.out $*.run.log > /dev/null; then \
 		echo ..ok; \
 	else \
 		echo fail; \
-	fi >> $*.log
+	fi >> $*.standard.log
 
-%.as: %.jan
-	$(JC) $* 2> $*.compile.out
+# Fejltest
+#
+# - Kompilerer filen (og gemmer loggen som $*.compile.log)
+# - Kører $*.check med compilerloggen som input.
+# - Hvis $*.check returner stand, så betragtes testen som gået
+#   godt, ellers betragtes den som have gået dårligt.
+#
+# En typisk ting som $*.check kunne indeholde var en grep kommando for en
+# bestemt fejl. som man gerne ville have - men den kunne også bruges til at
+# tjekke om der netop IKKE er fejl.
 
-%.compile.log: %.as
-	echo -n > $*.log
-	awk 'BEGIN {printf substr("$*............................",1,28)}' >> $*.log
-	if sh $*.check < $*.compile.out 2>&1 > /dev/null; then \
+%.error.log: %.as
+	awk 'BEGIN {printf substr("$*............................",1,28)}' > $*.error.log
+	if sh $*.check < $*.compile.log 2>&1 > /dev/null; then \
 		echo ..ok; \
 	else \
 		echo fail; \
-	fi >> $*.log
+	fi >> $*.error.log
 
 
-cleantmp:
-	rm -rf *.as
-	rm -rf *.actual.out
-	rm -rf *.compile.out
+# Alle kompileringer afhænger også af compileren, så de vil
+# blive opdateret, hvis der blev lavet en ny kompiler
+%.as: %.jan $(JC)
+	$(JC) $* 2> $*.compile.log
 
-clean: cleantmp
+# Oprydning
+clean:
 	rm -rf *.log
-	rm -f log
+	rm -rf *.as
 
+# Fejlhåndtering
+$(JC):
+	echo JC findes ikke
+	echo Kør make på src mappen før du fortsætter
+	exit 0

@@ -15,7 +15,7 @@ struct
       in
         let
           val pgm = Parser.Prog Lexer.Token lexbuf
-	      val () = Type.checkProgram pgm
+	  val () = Type.checkProgram pgm
           val code = Compiler.compile pgm
         in 
           let
