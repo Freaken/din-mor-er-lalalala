@@ -1,7 +1,20 @@
-LOGS=decrypt/log encrypt/log errors/log fall/log fib/log identity/log \
-	 logic/log reverse/log stack/log sum/log sumdif/log
+TESTS = decrypt.test	\
+		encrypt.test	\
+		errors.test		\
+		fall.test		\
+		fib1.test		\
+		fib2.test		\
+		fib3.test		\
+		identity.test	\
+	    logic.test		\
+		reverse.test	\
+		stack.test		\
+		sum.test		\
+		sumdif.test
 
 TARGET = tests.log
+
+.PHONY : $(TESTS)
 
 all:
 	cd ..; make tests
@@ -9,11 +22,20 @@ all:
 
 tests: $(TARGET)
 	
-$(TARGET): $(LOGS)
-	cat $(LOGS) > tests.log
 
-%/log:
-	touch $*/log
+$(TARGET): $(TESTS)
+	echo -n > $(TARGET)
+	for i in `echo $(TESTS) | sed -e 's/.test//g'`; do \
+		(cd $$i; make); \
+		cat $$i/log >> $(TARGET); \
+	done
+
+%.test:
+	cd $*; make
 
 clean:
-	rm -f $(TARGET) $(LOGS)
+	rm -f $(TARGET)
+	for i in `echo $(TESTS) | sed -e 's/.test//g'`; do \
+		(cd $$i; make clean); \
+	done
+

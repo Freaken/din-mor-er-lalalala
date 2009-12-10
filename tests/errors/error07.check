@@ -1,0 +1,1 @@
+grep "Type error: array variable used as integer"

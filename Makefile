@@ -21,5 +21,8 @@ clean:
 	done
 	rm -f report.pdf JC
 
+commit: clean
+	git commit -a
+	git push
 
 

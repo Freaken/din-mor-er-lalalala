@@ -1,9 +1,0 @@
-.*.swp
-*.as
-JC
-*.ui
-*.uo
-Parser.sml
-Parser.out
-Parser.sig
-Lexer.sml

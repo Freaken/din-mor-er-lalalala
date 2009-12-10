@@ -1,0 +1,41 @@
+JC = ../../src/JC
+SPIM = spim -file
+
+
+.PHONY : all clean standardtest $(NAME).jan
+
+standardtest: $(NAME).standard.log cleantmp
+	cp $(NAME).log log
+
+%.standard.log: %.as
+	$(SPIM) $*.as < $*.in | tail -n+6 > $*.actual.out
+	echo -n > $*.log
+	awk 'BEGIN {printf substr("$*............................",1,28)}' >> $*.log
+	if diff $*.out $*.actual.out > /dev/null; then \
+		echo ..ok; \
+	else \
+		echo fail; \
+	fi >> $*.log
+
+%.as: %.jan
+	$(JC) $* 2> $*.compile.out
+
+%.compile.log: %.as
+	echo -n > $*.log
+	awk 'BEGIN {printf substr("$*............................",1,28)}' >> $*.log
+	if sh $*.check < $*.compile.out 2>&1 > /dev/null; then \
+		echo ..ok; \
+	else \
+		echo fail; \
+	fi >> $*.log
+
+
+cleantmp:
+	rm -rf *.as
+	rm -rf *.actual.out
+	rm -rf *.compile.out
+
+clean: cleantmp
+	rm -rf *.log
+	rm -f log
+

@@ -1,5 +1,3 @@
-# PATH := $(PATH):/home/freaken/mosml/bin/
-
 all:
 	cd ..; make src
 
