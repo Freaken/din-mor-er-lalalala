@@ -3,5 +3,17 @@ Our additions to the partially complete compiler are divided into four
 files, {\tt Parser.grm}, {\tt Lexer.lex}, {\tt Type.sml} and {\tt Compiler.sml}.
 This report documents our additions in chapters corresponding to this division.
 
+Some design choices were made, which are documented in a corresponding chapter.
+
+\section{Design choices}
+
+\paragraph{Aligning arrays.}
 We also made a small change to {\tt Mips.sml} to include support for the
 {\tt .align} statement.
+
+\paragraph{Variables used on both sides of {\tt +=} or {\tt -=} statements.}
+One restriction is that we cannot have expressions of the form \verb!a += a!.
+Two special cases of this are
+
+\paragraph{Fulfilling requirements}
+
