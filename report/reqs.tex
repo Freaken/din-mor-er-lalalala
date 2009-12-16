@@ -95,17 +95,21 @@ fun getProcs [] pnames = pnames
 
 \paragraph{Updating identifiers have restrictions due to bijectivity.} When the
 updating operators \verb!+=! and \verb!-=! are type checked, the identifier that
-is being updated cannot be part of the expression on the right-hand side. For an
-update statement, \verb!a += b!, this is demonstrated in the pseudo-code for the
-type check: \verb+checkExp(Exp2, vtable, name(id))+, during which an error will
-occur if \verb+Exp2+ contains the identifier \verb+id+ (avoid).
+is being updated cannot be part of the expression on the right-hand side {\bf
+nor} the sub-expression that calculates an array index on the left-hand side.
 
-A second case to consider is illustrated in the example \verb!foo[foo[0]+2] += bar!.
-That is, whether the identifier that is being updated can be part of the
-expression that calculates the index of the array on the left-hand side. Since
-this sub-expression is not updating anything, and since it must be and is
-calculated before the variable can be updated, then the statement is
-well-defined both forwards and backwards.
+Examples of these cases are: \verb!a += a! and \verb!b[b[0]] += 1!, assuming
+\verb!b[0] == 0! to begin with. The first of these is a restriction from the
+assignment, and the latter is a restriction in Janus, cf. \cite[ch.
+2.1]{yokoyama}. We reason that it is possible to allow the latter, but that it
+requires runtime checking to ensure that the index is calculated before the
+assignment is equal to the index calculated after. We have however not added
+this feature, partly because it is safer to just not allow it, and partly
+because the specification of the language forbids it.
+
+For an update statement, \verb!a += b!, this is demonstrated in the pseudo-code
+for the type check: \verb+checkExp(Exp2, vtable, name(id))+, during which an
+error will occur if \verb+Exp2+ contains the identifier \verb+id+ (avoid).
 
 \vspace{0.2cm}
 The following properties works as expected, as seen in the tests.

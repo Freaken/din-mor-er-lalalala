@@ -111,10 +111,9 @@ checkCond(Cond, vtable) = case Cond of
 
 \subsection{$Check_{Defs}$}
 
-Here we take each definition and checks if it's already bound.
-If this is the case we throw an error, otherwise we bind it and
-continue to the next definition. Finally, we also check for arrays
-with size 0.
+Here we take each definition and checks if it's already bound.  If this is the
+case we throw an error, otherwise we bind it and continue to the next
+definition. Finally, we also check for arrays with size zero.
 
 \begin{verbatim}
 checkDefs([], vtable) = ok
