@@ -117,14 +117,16 @@ continue to the next definition. Finally, we also check for arrays
 with size 0. \\
 
 \begin{verbatim}
-checkDefs(Defs, vtable) =
-           for each Def in Defs
+checkDefs([], vtable) = ok
+checkDefs(Def :: Defs, vtable) =
              v := lookup(name(Def), vtable)
              if v is bound
-               then error (Multiple declarations of: name(v))
+               then error (Multiple declarations of: name(Def))
+             else
+               if type(Def) is array and size = 0
+                 then error (Zero-sized array: name(Def))
                else
-             if type(v) is array and size = 0
-               then error (Zero-sized array: name(v))
-               else ok
+                 bind(vtable,name(Def),type(Def))
+                 checkDefs(Defs,vtable)
 \end{verbatim}
 
