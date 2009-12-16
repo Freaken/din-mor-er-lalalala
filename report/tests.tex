@@ -1,44 +1,43 @@
 \section{Tests}
 
 The tests we have used to check if our compiler works as expected are
-just the tests which came with the assignment. We will later argue, that
-these tests are adequate to see that the compiler is working and argue that
-the compiler is sufficiently simple to not have unexpected bugs. We will
-however not do exhaustive tests, instead only try to show, that all the code,
-that we have tested every part of the code, that we have added have been
-tested.
+just the tests which came with the assignment. We will later argue that
+these tests are adequate to see that the compiler is working properly 
+and argue that the compiler is sufficiently simple to not have unexpected bugs. 
+We will, however, not do exhaustive testing. Instead we will only try to show 
+that all the code that we have added have been tested.
 
 \subsection{Implementation of our tests}
 As said, the tests used are only the tests supplied with the original project,
 with the exception of tests for a couple of errors, which have been added as
 {\tt error16-error24}.
 
-Test supplied have however been changed so, that the header from {\tt spim} is
+Test supplied have been changed, however, so the header from {\tt spim} is
 removed. The tests are executed in an automatic way using a general template
 called {\tt Makefile.template}. In this file there are general patterns for
-testing the compile-time and run-time behavior of the supplied testprograms.
+testing the compile-time and run-time behavior of the supplied test programs.
 
-\subsection{Sufficency of the supplied tests}
-We see, that the changed made to {\tt Lexer.lex} and {\tt Parser.grm} are
-so fundamental that any mistake made here would must likely result in
+\subsection{Sufficiency of the supplied tests}
+We see that the changes made to {\tt Lexer.lex} and {\tt Parser.grm} are
+so fundamental that any mistake made here would most likely result in
 compile-time errors. In case they didn't it would be \emph{very} unlikely
-they the result of all of the tests would be correct.
+that the result of all the tests would be correct.
 
-The changed made to {\tt Type.sml} can be diveded into the following categories:
+The changes made to {\tt Type.sml} can be divided into the following categories:
 \begin{itemize}
-\item Checking if variables are used the right way are tested in {\tt error01-error03}, {\tt error07-error09}.
-\item Checking if variables are used are actually defined is tested in {\tt error16-error19}.
-\item The possibility to descend into {\tt if} and {\tt loop} statements.
-      It is seen, that it raises no unexpected errors, as many of the tests use
+\item Checking if variables are used the right way is done in {\tt error01-error03}, {\tt error07-error09}.
+\item Checking if variables that are used are actually defined is done in {\tt error16-error19}.
+\item The possibility of descending into {\tt if} and {\tt loop} statements.
+      It is seen that this raises no unexpected errors, as many of the tests use
       these statements without errors. In {\tt error20} and {\tt error21} it is
-      seen, that errors can actually be raised inside these statements.
-\item Checking if the procedures in {\tt call} and {\tt uncall} statements is actually
-      defined is tested in {\tt error22} and {\tt error23}.
+      seen that errors can actually be raised inside these statements.
+\item Checking if the procedures in {\tt call} and {\tt uncall} statements are actually
+      defined is done in {\tt error22} and {\tt error23}.
 \item Checking if there is a zero sized array defined is done in {\tt error24}.
 \end{itemize}
 
 \vspace{0.2cm}
-The changes made in {\tt Compile.sml} can be divided into following categories:
+The changes made in {\tt Compile.sml} can be divided into the following categories:
 \begin{itemize}
 \item {\bf Arrays} Tested in {\tt error05}, {\tt error07}, {\tt error09},
       {\tt error15}, {\tt error24}, {\tt reverse}, {\tt stack} and {\tt sum}.
@@ -49,11 +48,11 @@ The changes made in {\tt Compile.sml} can be divided into following categories:
 \end{itemize}
 
 \clearpage
-The result of the tests are included here:
+The results of the tests are included here:
 \lstset{ %
 basicstyle=\footnotesize,       % the size of the fonts that are used for the code
 numbers=left,                   % where to put the line-numbers
-numberstyle=\tiny,      % the size of the fonts that are used for the line-numbers
+numberstyle=\tiny,              % the size of the fonts that are used for the line-numbers
 stepnumber=1,                   % the step between two line-numbers. If it's 1 each line will be numbered
 numbersep=5pt,                  % how far the line-numbers are from the code
 backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
