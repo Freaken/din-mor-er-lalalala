@@ -1,3 +1,9 @@
 \section{Design choices}
 
-This iz so fun.
+\begin{itemize}
+  \item We test that variables have the correct type, but we do so by
+  explicitly matching \verb+SOME Integer+, \verb+SOME (Array _)+ and
+  \verb+NONE+ instead of having a catch-all after the two first. This way, if
+  the language is extended, the compiler will give warnings which signify that
+  changes need to be added here as well.
+\end{itemize}
