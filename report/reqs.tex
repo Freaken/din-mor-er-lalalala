@@ -78,11 +78,36 @@ The code for \verb+Janus.Loop+ is very similar.
 
 \end{enumerate}
 
+\paragraph{Variables have unique names.} Two variables cannot have the same name
+regardless of their type. This is seen in the pseudo-code for \verb+checkDefs+
+and corresponds to the actual type check.
+
+\paragraph{Procedures have unique names.} Two procedures cannot have the same
+name. This is ensured in the function \verb+getProcs+ during the type check:
+
+\begin{verbatim}
+fun getProcs [] pnames = pnames
+  | getProcs ((p,s,pos)::procs) pnames =
+      if List.exists (fn q=>q=p) pnames
+      then raise Error ("Multiply declared procedure "^p,pos)
+      else getProcs procs (p::pnames)
+\end{verbatim}
+
+\paragraph{Updating identifiers have restrictions due to bijectivity.} When the
+updating operators \verb!+=! and \verb!-=! are type checked, the identifier that
+is being updated cannot be part of the expression on the right-hand side. For an
+update statement, \verb!a += b!, this is demonstrated in the pseudo-code for the
+type check: \verb+checkExp(Exp2, vtable, name(id))+, during which an error will
+occur if \verb+Exp2+ contains the identifier \verb+id+ (avoid).
+
+A second case to consider is illustrated in the example \verb!foo[foo[0]+2] += bar!.
+That is, whether the identifier that is being updated can be part of the
+expression that calculates the index of the array on the left-hand side. Since
+this sub-expression is not updating anything, and since it must be and is
+calculated before the variable can be updated, then the statement is
+well-defined both forwards and backwards.
+
 \begin{itemize}
-\item Two variables of same name cannot be declared (regardless of type) (typecheck)
-\item Two procedures cannot have the same name (typecheck)
-\item Updating an identifier cannot happen by use of that identifier. (typecheck)
-\item Sequences are performed sequentially from left to right.
 \item Conditional statements work as expected.
 \item Loop statements work as expected. (reference to asm and tests? compare to R()-table)
 \item Procedure calls work recursively.

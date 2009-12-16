@@ -7,4 +7,23 @@
   the language is extended with additional types, the compiler will give
   pattern matching warnings which signify that changes need to be added here as
   well.
+
+  We disagree with the original semantics in the code,
+\begin{verbatim}
+...
+(case lookup x vtable of
+  SOME Integer =>
+    if x = avoid
+      then raise Error ("LHS variable used on RHS",p)
+      else ()
+  | _ => raise Error ("array variable used as integer",p))
+\end{verbatim}
+
+since it does not distinguish between \verb+SOME (Array _)+ and \verb+NONE+,
+and we would receive an incorrect error message when referring to a non-existing
+variable name.
+
+  \item We check that arrays cannot have the length zero and report a
+  compile-time error if this happens. We reason that arrays of length zero don't
+  make sense, since they cannot store anything.
 \end{itemize}
