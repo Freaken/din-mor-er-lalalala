@@ -15,5 +15,18 @@ We also made a small change to {\tt Mips.sml} to include support for the
 One restriction is that we cannot have expressions of the form \verb!a += a!.
 Two special cases of this are
 
-\paragraph{Fulfilling requirements}
+\paragraph{Requirements}
+
+No overflow control
+Runtime detection of bijectivity at program termination
+Runtime detection of bijectivity of /2 operator?
+Two variables of same name cannot be declared (regardless of type) (typecheck)
+Two procedures cannot have the same name (typecheck)
+Updating an identifier cannot happen by use of that identifier. (typecheck)
+Sequences are performed sequentially from left to right.
+Conditional statements work as expected.
+Loop statements work as expected.
+Procedure calls work recursively.
+Procedure uncalls work as expected. (e.g. call x; uncall x?)
+Each operator (+=, -=, <, ==, !=, ...) work as expected.
 

@@ -66,8 +66,9 @@ struct
          Mips.LA ("4","_IfErrorString_"),
          Mips.LI ("2","4"), Mips.SYSCALL, (* print string *)
          Mips.J "_stop_",
-         Mips.DATA "",
-         Mips.LABEL "_cr_",       (* carriage return string *)
+         Mips.DATA ""]
+      @ arrayCode
+      @ [Mips.LABEL "_cr_",       (* carriage return string *)
          Mips.ASCIIZ "\n",
          Mips.LABEL "_NonZeroString_",
          Mips.ASCIIZ "Nonzero non-output variable at end\n",
@@ -77,14 +78,12 @@ struct
          Mips.ASCIIZ "Assertion at the beginning of a loop-statement failed\n"
 
       ]
-      @ arrayCode
     end
 
   and makeArraySpace [] = []
     | makeArraySpace (Janus.IntVarDef _ :: defs) = makeArraySpace defs
     | makeArraySpace (Janus.ArrayVarDef (x,size,_) :: defs) =
-        [Mips.ALIGN "2",
-         Mips.LABEL ("_array_" ^ x),
+        [Mips.LABEL ("_array_" ^ x),
          Mips.SPACE (Int.toString(size*4))]
         @ makeArraySpace defs
 
