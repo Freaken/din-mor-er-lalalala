@@ -97,7 +97,7 @@ struct
   (* read input variables *)
   and makeReads [] = []
     | makeReads (Janus.IntVarDef (x,_)::defs) =
-        [Mips.LI ("2","5"), (* 5 = read_int syscall *)
+        [Mips.LI ("2","5"), (* read_int syscall *)
          Mips.SYSCALL,
          Mips.MOVE (x,"2")]
         @ makeReads defs
@@ -211,8 +211,8 @@ struct
   and compileExp e place =
     case e of
       Janus.Num (n,pos) =>
-        if n<32768
-        then [Mips.LI (place, makeConst n)]
+        if n<32768 then
+          [Mips.LI (place, makeConst n)]
         else
           [Mips.LUI (place, makeConst (n div 32768)),
            Mips.ORI (place, place, makeConst (n mod 32768))]
@@ -236,7 +236,7 @@ struct
           val code2 = compileExp e2 t2
         in
           code1 @ code2 @ [Mips.ADD (place,t1,t2)]
-    end
+        end
     | Janus.Minus (e1,e2,pos) =>
         let
           val t1 = "_minus1_"^newName()
@@ -374,7 +374,7 @@ struct
         [Mips.ADDI (SP,SP,"-4"), (* push old return address *)
          Mips.SW (RA,SP,"0"),
          Mips.JAL ("_forward_"^proc,vars)] (* and JAL to procedure *)
-    (* all global variables are preserved *)
+        (* all global variables are preserved *)
     | Janus.Uncall (proc,pos) =>
         [Mips.ADDI (SP,SP,"-4"), (* push old return address *)
          Mips.SW (RA,SP,"0"),
@@ -393,14 +393,13 @@ struct
 
   and compileProcs [] vars = []
     | compileProcs ((pname,body,pos)::procs) vars =
-        [Mips.LABEL ("_forward_"^pname)]
-        @ compileStat body vars
-        @ [Mips.MOVE (FP,RA), (* move return address to FP *)
-           Mips.LW (RA,SP,"0"), (* restore old return address *)
-           Mips.ADDI (SP,SP,"4"),
-           Mips.JR (FP,vars)] (* and jump back *)
+        [Mips.LABEL ("_forward_"^pname)] @
+        compileStat body vars @
+        [Mips.MOVE (FP,RA), (* move return address to FP *)
+         Mips.LW (RA,SP,"0"), (* restore old return address *)
+         Mips.ADDI (SP,SP,"4"),
+         Mips.JR (FP,vars)] (* and jump back *)
         (* all global variables are preserved *)
-
         @ compileProcs procs vars
 
         @ [Mips.LABEL ("_backward_"^pname)]

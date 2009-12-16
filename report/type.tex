@@ -6,8 +6,11 @@
 checkExp(Exp, vtable, avoid) = case Exp of
     num => ok
   | id  => v := lookup(vtable, name(id))
-           if type(v) is not integer
-             then error (Array variable used as integer)
+           if v is undefined
+             then error (v is undefined)
+             else
+           if type(v) is an array
+             then error (Array v is used as an integer)
              else
            if name(v) = avoid
              then error (LHS variable used on RHS)
@@ -15,8 +18,11 @@ checkExp(Exp, vtable, avoid) = case Exp of
   | id `[` Exp1 `]` =>
            checkExp(Exp1, vtable, ftable, avoid)
            v := lookup(vtable, name(id))
-           if type(v) is not array
-             then error (Integer variable used as array)
+           if v is undefined
+             then error (v is undefined)
+             else
+           if type(v) is an integer
+             then error (Integer name(id) is used as an array)
              else
            if name(v) = avoid
              then error (LHS variable used on RHS)
@@ -39,15 +45,21 @@ checkStat(Stat, vtable, pnames) = case Stat of
   | id `+=` Exp2
   | id `-=` Exp2 =>
            v := lookup(vtable, name(id))
-           if type(v) is not integer
-             then error (Array variable used as integer)
+           if v is undefined
+             then error (v is undefined)
+             else
+           if type(v) an array
+             then error (Array v is used as an integer)
              else checkExp(Exp2, vtable, name(id))
   | id `[` Exp1 `]` `+=` Exp2
   | id `[` Exp1 `]` `-=` Exp2 =>
            checkExp(Exp1, vtable, none)
            v := lookup(vtable, name(id))
-           if type(v) is not integer
-             then error (Integer variable used as an array)
+           if v is undefined
+             then error (v is undefined)
+             else
+           if type(v) is an integer
+             then error (Integer v is used as an array)
              else checkExp(Exp2, vtable, name(id))
   | `if` Cond1 `then` Stat1 `else` Stat2 `fi` Cond2 =>
            checkCond(Cond1, vtable)
