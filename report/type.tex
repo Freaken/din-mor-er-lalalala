@@ -65,7 +65,7 @@ checkStat(Stat, vtable, pnames) = case Stat of
              else checkExp(Exp2, vtable, name(id))
   | id `[` Exp1 `]` `+=` Exp2
   | id `[` Exp1 `]` `-=` Exp2 =>
-           checkExp(Exp1, vtable, none)
+           checkExp(Exp1, vtable, name(id))
            v := lookup(vtable, name(id))
            if v is undefined
              then error (name(id) is undefined)
@@ -111,10 +111,9 @@ checkCond(Cond, vtable) = case Cond of
 
 \subsection{$Check_{Defs}$}
 
-Here we take each definition and checks if it's already bound.
-If this is the case we throw an error, otherwise we bind it and
-continue to the next definition. Finally, we also check for arrays
-with size 0.
+Here we take each definition and checks if it's already bound.  If this is the
+case we throw an error, otherwise we bind it and continue to the next
+definition. Finally, we also check for arrays with size zero.
 
 \begin{verbatim}
 checkDefs([], vtable) = ok
