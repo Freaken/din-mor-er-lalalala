@@ -1,6 +1,14 @@
 \section{Type check}
 
+The typecheck is structured as 4 cases: expressions, statements, conditions and definitions. \\
+The code that is shown in this section is a representation of the code we use, 
+which is rewritten as pseduo-code because of the increased readability.
+
 \subsection{$Check_{Exp}$}
+
+This function checks that variables aren't used as arrays and vice versa,
+and that the used variables exist. Composite expressions are split up
+and each part is checked individually. \\
 
 \begin{verbatim}
 checkExp(Exp, vtable, avoid) = case Exp of
@@ -36,6 +44,10 @@ checkExp(Exp, vtable, avoid) = case Exp of
 \end{verbatim}
 
 \subsection{$Check_{Stat}$}
+
+Here we check the different statements. We check that all variables are
+defined, and check the conditionals and expressions within with their
+respective functions. \\
 
 \begin{verbatim}
 checkStat(Stat, vtable, pnames) = case Stat of
@@ -82,6 +94,8 @@ checkStat(Stat, vtable, pnames) = case Stat of
 
 \subsection{$Check_{Cond}$}
 
+This function merely checks the expressions inside conditionals. \\
+
 \begin{verbatim}
 checkCond(Cond, vtable) = case Cond of
     Exp1 `==` Exp2
@@ -97,15 +111,22 @@ checkCond(Cond, vtable) = case Cond of
 
 \subsection{$Check_{Defs}$}
 
+Here we take each definition and checks if it's already bound.
+If this is the case we throw an error, otherwise we bind it and
+continue to the next definition. Finally, we also check for arrays
+with size 0. \\
+
 \begin{verbatim}
-checkDefs(Defs, vtable) =
-           for each Def in Defs
+checkDefs([], vtable) = ok
+checkDefs(Def :: Defs, vtable) =
              v := lookup(name(Def), vtable)
              if v is bound
-               then error (Multiple declarations of: name(v))
+               then error (Multiple declarations of: name(Def))
+             else
+               if type(Def) is array and size = 0
+                 then error (Zero-sized array: name(Def))
                else
-             if type(v) is array and size = 0
-               then error (Zero-sized array: name(v))
-               else ok
+                 bind(vtable,name(Def),type(Def))
+                 checkDefs(Defs,vtable)
 \end{verbatim}
 
