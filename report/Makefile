@@ -1,5 +1,5 @@
 TARGET=report.pdf
-TEXFILES=preamble.tex macros.tex lex.tex parse.tex type.tex compile.tex reqs.tex design.tex tests.tex
+TEXFILES=preamble.tex intro.tex macros.tex lex.tex parse.tex type.tex compile.tex reqs.tex design.tex tests.tex
 
 all: $(TARGET)
 
