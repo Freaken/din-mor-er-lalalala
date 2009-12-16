@@ -67,7 +67,7 @@ struct
              | SOME (Array _) => raise Error ("Variable " ^ x ^ " is an Array, but is used as an Integer", p)
              | NONE => raise Error ("Integer " ^ x ^ " is not defined",p))
         |  Janus.ArrayIndex (x,e1,p) =>
-             (checkExp e1 vtable "";
+             (checkExp e1 vtable x;
              (case lookup x vtable of
                SOME (Array _) =>
                  checkExp e vtable x
@@ -83,7 +83,7 @@ struct
              | SOME (Array _) => raise Error ("Variable " ^ x ^ " is an Array, but is used as an Integer", p)
              | NONE => raise Error ("Integer " ^ x ^ " is not defined",p))
         |  Janus.ArrayIndex (x,e1,p) =>
-             (checkExp e1 vtable "";
+             (checkExp e1 vtable x;
              (case lookup x vtable of
                SOME (Array _) =>
                  checkExp e vtable x
