@@ -1,1 +1,1 @@
-grep "Type error: integer variable used as array"
+grep "Type error: Variable y is an Integer, but is used as an Array"

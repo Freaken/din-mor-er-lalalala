@@ -14,13 +14,6 @@ SPIM = spim -file
 # Hovedfilen er altid $(NAME).log
 all: $(NAME).log
 
-# Tjekker om JC findes, for ellers giver det nogle ret underlige fejl
-precheck:
-	if ! [ -e $(JC) ]; then \
-		echo "JC findes ikke. Kør make på src mappen"; \
-		exit 0; \
-	fi
-
 # Standardtest
 #
 # - Kompilerer filen (og gemmer loggen som $*.compile.log)
@@ -51,6 +44,7 @@ precheck:
 # tjekke om der netop IKKE er fejl.
 
 %.error.log: %.as
+	touch $*.error.log
 	awk 'BEGIN {printf substr("$*............................",1,28)}' > $*.error.log
 	if sh $*.check < $*.compile.log 2>&1 > /dev/null; then \
 		echo ..ok; \
