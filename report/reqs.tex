@@ -1,9 +1,84 @@
 \section{Requirements}
 
+\paragraph{No overflow control.} Arithmetic on 32-bit two's complement integers
+has no overflow detection. This is a consequence of not explicitly adding it
+through either MIPS interrupts or custom checking of sign bits.
+
+\paragraph{Runtime detection of bijectivity.} We assert that programs are
+bijective during runtime in two ways:
+
+\begin{enumerate}
+  \item Temporary variables start their existence with the value zero (by way of
+        the \verb+makeZero+ function, which we have extended to work for
+        arrays), and at the end of a program, they must also have the value
+        zero.  This is handled by the function \verb+checkZero+, which we have
+        also extended to work for arrays.
+
+        The code for \verb+checkZero+, as illustrated below, loads the value at
+        each array index and jumps to \verb+_NonZero_+ if the value is not equal
+        to zero:
+\begin{verbatim}
+...
+| checkZero (Janus.ArrayVarDef (x,size,_)::defs) =
+  let
+    val startlabel = "_checkzerostart_" ^ newName()
+    val arrayindex = "_index_" ^ newName()
+    val countdown = "_counter_" ^ newName()
+    val tmpvar = "_zero_tmp_var_" ^ newName()
+  in
+    [Mips.LA (arrayindex, "_array_" ^ x),
+     Mips.LI (countdown, Int.toString(size)),
+     Mips.LABEL startlabel,
+
+     Mips.LW(tmpvar, arrayindex, "0"),
+     Mips.BNE(tmpvar, "0", "_NonZero_"),
+
+     Mips.ADDI(countdown, countdown, "-1"),
+     Mips.ADDI(arrayindex, arrayindex, "4"),
+
+     Mips.BNE("0", countdown, startlabel)] @
+     checkZero defs
+  end
+\end{verbatim}
+
+  \item The second conditions of if-statements and loop-statements function as
+        assertions of bijectivity since the first condition must always evaluate
+        to the opposite of the second condition. This is handled in the
+        \verb+checkStat+ function that depends on the function \verb+compileCond+,
+        which we added.
+
+        The function \verb+compileCond+ takes as argument a piece of abstract
+        syntax corresponding to a condition, and two labels. It then produces
+        MIPS code that corresponds to the comparisons and jumps to the first
+        label if the comparison is successful and to the second label if not.
+
+        The function \verb+compileStat+ takes advantage of this by switching the
+        order of labels, as illustrated in the following code:
+
+\begin{verbatim}
+...
+| Janus.If (c1,s1,s2,c2,(line,col)) =>
+    let
+      val endvar = "_ifend_" ^ newName()
+      val cond1  = "_if1_" ^ newName()
+      val cond2  = "_if2_" ^ newName()
+    in
+      compileCond c1 cond1 cond2 @
+      Mips.LABEL cond1 ::
+      compileStat s1 vars @
+      compileCond c2 endvar "_ifassertfail_" @
+      Mips.LABEL cond2 ::
+      compileStat s2 vars @
+      compileCond c2 "_ifassertfail_" endvar @
+      [Mips.LABEL endvar]
+    end
+\end{verbatim}
+
+The code for \verb+Janus.Loop+ is very similar.
+
+\end{enumerate}
+
 \begin{itemize}
-\item No overflow control
-\item Runtime detection of bijectivity at program termination
-\item Runtime detection of bijectivity of /2 operator?
 \item Two variables of same name cannot be declared (regardless of type) (typecheck)
 \item Two procedures cannot have the same name (typecheck)
 \item Updating an identifier cannot happen by use of that identifier. (typecheck)
