@@ -1,13 +1,17 @@
 \section{Compiler}
+
+In the {\tt Compiler.sml} file we've added code for the following tasks:
+
 \begin{itemize}
-\item makeArraySpace + indsættelse
-\item loopassert, ifassert
-\item findvars fik array tilføjet (easy peasy)
-\item reads, makezero, writes og checkzeros af arrays
-\item brug af arrays, både på højresiden og venstre
-\item compileCond
-\item if og loops, som bruger compileCond
-\item uncall
-\item \_backwards\_ af en funktion, som bruger reverseStatement
+\item makeArraySpace, making room for arrays in the beginning of the {\tt DATA} section.
+\item loopassert and ifassert for ensuring that the bijectivity holds.
+\item added arrays to findvars (trivial)
+\item implemented makeReads, makeWrites, makeZero and checkZero for arrays. 
+\item implemented arrays which can be used on both left- and righthand sides.
+\item added compileCond, which generates code for conditional statements.
+\item implemented if and loop in compileStat, which uses compileCond.
+\item added the uncall function, which runs the code marked with \_backwards\_.
+\item added reverseStatement, which defines the backwards code.
+\item added \_backwards\_ to compileProcs, generating the backwards code.
 \end{itemize}
 
