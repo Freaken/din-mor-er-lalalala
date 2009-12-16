@@ -3,15 +3,15 @@
 In the {\tt Compiler.sml} file we've added code for the following tasks:
 
 \begin{itemize}
-\item makeArraySpace, making room for arrays in the beginning of the {\tt DATA} section.
+\item {\tt makeArraySpace}, making room for arrays in the beginning of the {\tt DATA} section.
 \item loopassert and ifassert for ensuring that the bijectivity holds.
-\item added arrays to findvars (trivial)
-\item implemented makeReads, makeWrites, makeZero and checkZero for arrays. 
+\item added arrays to {\tt findvars} (trivial)
+\item implemented {\tt makeReads}, {\tt makeWrites}, {\tt makeZero} and {\tt checkZero} for arrays. 
 \item implemented arrays which can be used on both left- and righthand sides.
-\item added compileCond, which generates code for conditional statements.
-\item implemented if and loop in compileStat, which uses compileCond.
-\item added the uncall function, which runs the code marked with \_backwards\_.
+\item added {\tt compileCond}, which generates code for conditional statements.
+\item implemented if and loop in {\tt compileStat}, which uses {\tt compileCond}.
+\item added the {\tt uncall} function, which runs the code marked with \_backwards\_.
 \item added reverseStatement, which defines the backwards code.
-\item added \_backwards\_ to compileProcs, generating the backwards code.
+\item added \_backwards\_ to {\tt compileProcs}, generating the backwards code.
 \end{itemize}
 
