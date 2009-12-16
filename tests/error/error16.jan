@@ -1,0 +1,5 @@
+// error16: Usage of an integer, which is not defined.
+
+x -> y;
+
+x += z

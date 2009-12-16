@@ -1,3 +1,56 @@
 \section{Tests}
 
-This iz so fun.
+The tests we have used to check if our compiler works as expected are
+just the tests which came with the assignment. We will later argue, that
+these tests are adequate to see that the compiler is working and argue that
+the compiler is sufficiently simple to not have unexpected bugs.
+
+\subsection{Implementation of our tests}
+As said, the tests used are only the tests supplied with the original project,
+with the exception of tests for the error ``{\tt Variable x is not defined}'',
+for which we have constructed the tests 
+
+They have however been changed so, that the header from {\tt spim} is removed.
+The tests are executed in an automatic way using a general template called
+{\tt Makefile.template}. In this file there are general patterns for testing
+the compile-time and run-time behavior of the supplied testprograms.
+
+\subsection{Sufficency of the supplied tests}
+We see, that the changed made to {\tt Lexer.lex} and {\tt Parser.grm} are
+so fundamental that any mistake made here would must likely result in
+compile-time errors. In case they didn't it would be \emph{very} unlikely
+they the result of all of the tests would be correct.
+
+The changed made to {\tt Type.sml} can be diveded into the following categories:
+\begin{itemize}
+\item The possibility to descend into {\tt if} and {\tt loop} statements, which is tested in {\tt bla}.
+\item Doing test if the procedure used in {\tt uncall} statements is actually defined.
+\item Checking if variables are used the right way are tested in {\tt bla}.
+\item Checking if variables are used are actually defined is tested in {\tt error16-19}.
+\end{itemize}
+
+\vspace{0.2cm}
+The changes made in {\tt Compile.sml} can be divided into following categories:
+\begin{itemize}
+\item {\bf Arrays} Tested in {\tt bla, bla, bla and bla}.
+\item {\bf General conditions} Tested in {\tt logic}.
+\item {\bf If statements} Tested in {\tt bleeeh}.
+\item {\bf Loop statements} Tested in {\tt bleeeh}.
+\item {\bf Uncall} Tested in {\tt decrypt}.
+\end{itemize}
+
+\vspace{0.2cm}
+The result of the tests are included here:
+\lstset{ %
+basicstyle=\footnotesize,       % the size of the fonts that are used for the code
+numbers=left,                   % where to put the line-numbers
+numberstyle=\tiny,      % the size of the fonts that are used for the line-numbers
+stepnumber=1,                   % the step between two line-numbers. If it's 1 each line will be numbered
+numbersep=5pt,                  % how far the line-numbers are from the code
+backgroundcolor=\color{white},  % choose the background color. You must add \usepackage{color}
+frame=single,                   % adds a frame around the code
+breaklines=true,                % sets automatic line breaking
+}
+{\tiny \tt
+\lstinputlisting{../tests/tests.log}
+}
