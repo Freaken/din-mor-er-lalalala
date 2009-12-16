@@ -8,7 +8,7 @@ which is rewritten as pseduo-code because of the increased readability.
 
 This function checks that variables aren't used as arrays and vice versa,
 and that the used variables exist. Composite expressions are split up
-and each part is checked individually. \\
+and each part is checked individually.
 
 \begin{verbatim}
 checkExp(Exp, vtable, avoid) = case Exp of
@@ -47,7 +47,7 @@ checkExp(Exp, vtable, avoid) = case Exp of
 
 Here we check the different statements. We check that all variables are
 defined, and check the conditionals and expressions within with their
-respective functions. \\
+respective functions. 
 
 \begin{verbatim}
 checkStat(Stat, vtable, pnames) = case Stat of
@@ -94,7 +94,7 @@ checkStat(Stat, vtable, pnames) = case Stat of
 
 \subsection{$Check_{Cond}$}
 
-This function merely checks the expressions inside conditionals. \\
+This function merely checks the expressions inside conditionals.
 
 \begin{verbatim}
 checkCond(Cond, vtable) = case Cond of
@@ -114,7 +114,7 @@ checkCond(Cond, vtable) = case Cond of
 Here we take each definition and checks if it's already bound.
 If this is the case we throw an error, otherwise we bind it and
 continue to the next definition. Finally, we also check for arrays
-with size 0. \\
+with size 0.
 
 \begin{verbatim}
 checkDefs([], vtable) = ok
