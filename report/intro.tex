@@ -3,31 +3,9 @@ Our additions to the partially complete compiler are divided into four
 files, {\tt Parser.grm}, {\tt Lexer.lex}, {\tt Type.sml} and {\tt Compiler.sml}.
 This report documents our additions in chapters corresponding to this division.
 
-Some design choices were made, which are documented in a corresponding chapter.
+Additionally, design choices, fulfilling assignment requirements and testing
+the code have corresponding chapters.
 
-\section{Design choices}
-
-\paragraph{Aligning arrays.}
-We also made a small change to {\tt Mips.sml} to include support for the
-{\tt .align} statement.
-
-\paragraph{Variables used on both sides of {\tt +=} or {\tt -=} statements.}
-One restriction is that we cannot have expressions of the form \verb!a += a!.
-Two special cases of this are
-
-\paragraph{Requirements}
-
-No overflow control
-Runtime detection of bijectivity at program termination
-Runtime detection of bijectivity of /2 operator?
-Two variables of same name cannot be declared (regardless of type) (typecheck)
-Two procedures cannot have the same name (typecheck)
-Updating an identifier cannot happen by use of that identifier. (typecheck)
-Sequences are performed sequentially from left to right.
-Conditional statements work as expected.
-Loop statements work as expected. (reference to asm and tests? compare to R()-table)
-Procedure calls work recursively.
-Procedure uncalls work as expected. (reference to code and tests)
-Each operator (+=, -=, <, ==, !=, ...) work as expected.
-Arrays work as expected.
-
+This report does not try to document the Janus programming language extensively,
+but merely our implementation of parts of it. Some explanations have been made
+explicit because we implement certain features.
