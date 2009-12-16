@@ -1,4 +1,4 @@
-// error16: Usage of an array, which is not defined
+// error17: Usage of an array, which is not defined
 
 x -> y;
 

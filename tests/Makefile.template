@@ -65,6 +65,6 @@ clean:
 
 # Fejlhåndtering
 $(JC):
-	echo JC findes ikke
-	echo Kør make på src mappen før du fortsætter
-	exit 0
+	@echo "\033[31mFejl: JC findes ikke\033[0m"
+	@echo "\033[31mFejl: Kør make på src mappen før du fortsætter\033[0m"
+	@exit 1

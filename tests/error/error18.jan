@@ -1,4 +1,4 @@
-// error16: Usage of an integer, which is not defined.
+// error18: Usage of an integer, which is not defined.
 
 x -> y;
 

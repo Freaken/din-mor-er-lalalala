@@ -1,0 +1,5 @@
+// error21: Usage of an integer, which is not defined inside a loop statement
+
+x -> y;
+
+uncall p

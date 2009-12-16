@@ -1,0 +1,9 @@
+// error20: Usage of an integer, which is not defined inside an if statement
+
+x -> y;
+
+if 0 < 1 then
+  z += x
+else
+  skip
+fi 0 < 1

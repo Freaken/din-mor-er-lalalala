@@ -19,6 +19,10 @@ TESTLOGS = error01.error.log \
 		   error17.error.log \
 		   error18.error.log \
 		   error19.error.log \
+		   error20.error.log \
+		   error21.error.log \
+		   error22.error.log \
+		   error23.error.log \
 
 $(NAME).log: $(TESTLOGS)
 	cat $(TESTLOGS) > $(NAME).log

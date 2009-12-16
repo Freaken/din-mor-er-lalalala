@@ -20,6 +20,6 @@ clean:
 
 # Fejlhåndtering
 ../tests/tests.log:
-	echo tests.log findes ikke
-	echo Kør make på testsmappen før du fortsætter
-	exit 0
+	@echo "\033[31mFejl: tests.log findes ikke\033[0m"
+	@echo "\033[31mFejl: Kør make på testsmappen før du fortsætter\033[0m"
+	@exit 1
