@@ -1,5 +1,5 @@
 TARGET=report.pdf
-TEXFILES=preamble.tex lex.tex parse.tex compile.tex
+TEXFILES=preamble.tex macros.tex lex.tex parse.tex type.tex compile.tex reqs.tex design.tex tests.tex
 
 all: $(TARGET)
 
@@ -8,14 +8,14 @@ $(TARGET): $(TEXFILES) ../tests/tests.log
 
 # Oprydning
 clean:
-	rm -rf *.aux *.log *.out *.toc *.data *~ $(TARGET)
+	rm -rf *.aux *.log *.out *.toc *.data *.blg *.bbl *~ $(TARGET)
 
 # pdflatex kræver en del gennemkøringer for at opdatere sidetal og lignende
 %.pdf: %.tex
-	pdflatex $*.tex
-#	bibtex $*.tex
-	pdflatex $*.tex
-	pdflatex $*.tex
+	pdflatex $*
+	bibtex $*
+	pdflatex $*
+	pdflatex $*
 
 
 # Fejlhåndtering

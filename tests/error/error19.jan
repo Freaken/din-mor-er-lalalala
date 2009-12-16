@@ -1,0 +1,5 @@
+// error16: Usage of an array, which is not defined
+
+x -> y;
+
+z[0] += x
