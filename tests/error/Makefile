@@ -23,6 +23,7 @@ TESTLOGS = error01.error.log \
 		   error21.error.log \
 		   error22.error.log \
 		   error23.error.log \
+		   error24.error.log \
 
 $(NAME).log: $(TESTLOGS)
 	cat $(TESTLOGS) > $(NAME).log

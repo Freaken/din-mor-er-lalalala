@@ -1,0 +1,5 @@
+// error24: Zero sized array
+
+x[0] -> ;
+
+skip

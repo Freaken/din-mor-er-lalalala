@@ -120,7 +120,7 @@ struct
            NONE => checkDefs defs ((x,Integer)::vtable)
          | SOME _ => raise Error ("Multiple declaration of "^x,pos))
     | checkDefs (Janus.ArrayVarDef (x,size,pos)::defs) vtable =
-        if size = 0 then raise Error ("Zero-sized array",pos)
+        if size = 0 then raise Error ("Zero-sized array "^x,pos)
         else
           (case lookup x vtable of
              NONE => checkDefs defs ((x,Array size )::vtable)
