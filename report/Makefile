@@ -17,6 +17,8 @@ clean:
 	pdflatex $*
 	pdflatex $*
 
+print: $(TARGET)
+	    cat $(TARGET) | ssh mathias@ask.diku.dk lp -d m1b
 
 # Fejlhåndtering
 ../tests/tests.log:

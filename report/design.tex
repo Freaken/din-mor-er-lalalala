@@ -26,4 +26,13 @@ variable name.
   \item We check that arrays cannot have the length zero and report a
   compile-time error if this happens. We reason that arrays of length zero don't
   make sense, since they cannot store anything.
+
+  \item We do not check whether an array index is outside the range of the
+        array, nor do we handle it by wrapping using modulus.
+
+  \item Do not allow arrays to be used in their own index, as explained in
+        Requirements.
+
+
+ 
 \end{itemize}
