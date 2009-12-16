@@ -107,11 +107,12 @@ this sub-expression is not updating anything, and since it must be and is
 calculated before the variable can be updated, then the statement is
 well-defined both forwards and backwards.
 
+\vspace{0.2cm}
+The following properties works as expected, as seen in the tests.
 \begin{itemize}
-\item Conditional statements work as expected.
-\item Loop statements work as expected. (reference to asm and tests? compare to R()-table)
-\item Procedure calls work recursively.
-\item Procedure uncalls work as expected. (reference to code and tests)
-\item Each operator (+=, -=, <, ==, !=, ...) work as expected.
-\item Arrays work as expected.
+\item Conditional statements
+\item Loop statements
+\item Recursive procedure calls and uncalls
+\item Each operator ({\tt +, -, +=, -=, /2, !, \&\&, ||,  <, ==})
+\item Arrays
 \end{itemize}
