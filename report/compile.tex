@@ -1,27 +1,27 @@
 \section{Compiler}
 
-In the {\tt Compiler.sml} file we've added code for the following tasks:
+In the {\tt Compiler.sml} file we have added code for the following tasks:
 
 \begin{itemize}
-\item {\tt makeArraySpace}, which created allocated space for arrays in the
+\item {\tt makeArraySpace}, which creates allocated space for arrays in the
       beginning of the {\tt DATA} section. The space could have been allocated
-      anywhere in the {\tt DATA} section, but as it need to be aligned to a
-      $4$-bit address, it is easiest to place it at the beginning of the
-      section.
+      anywhere in the {\tt DATA} section, but it needs to be aligned to a
+      $4$-bit address. This could have been done e.g. by using the align-statement. 
+      However, it is easier just to place it at the beginning of the section.
 \item Assertion checking for {\tt if} and {\tt loop} to ensure that the
       bijectivity holds.
 \item Added arrays to {\tt findvars} (trivial).
 \item Implemented {\tt makeReads}, {\tt makeWrites}, {\tt makeZero} and
       {\tt checkZero} for arrays.
-\item Implemented arrays which can be used on both left- and righthand sides.
+\item Implemented arrays, which can be used on both left hand and right hand sides.
 \item Added {\tt compileCond}, which generates code for conditional statements
       using two jump positions.
 \item Implemented {\tt if} and {\tt loop} in {\tt compileStat}, which uses
       {\tt compileCond}.
 \item Added the {\tt uncall} function, which runs the code marked with
       {\tt \_backwards\_}.
-\item Added {\tt reverseStatement}, reverses a statement (which could consist of
-      multiple statements).
+\item Added {\tt reverseStatement}, which reverses a statement 
+      (which could consist of multiple statements).
 \item Added {\tt \_backwards\_} to {\tt compileProcs}, generating the reversed
       code using {\tt reverseStatement}.
 \end{itemize}

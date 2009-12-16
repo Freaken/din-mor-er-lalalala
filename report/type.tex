@@ -1,12 +1,12 @@
 \section{Type check}
 
-The typecheck is structured as 4 cases: expressions, statements, conditions and definitions. \\
+The type check is structured as 4 cases: expressions, statements, conditions and definitions. \\
 The code that is shown in this section is a representation of the code we use, 
 which is rewritten as pseudo-code because of the increased readability.
 
 \subsection{$Check_{Exp}$}
 
-This function checks that variables aren't used as arrays and vice versa,
+This function checks that variables are not used as arrays and vice versa,
 and that the used variables exist. Composite expressions are split up
 and each part is checked individually.
 
@@ -15,24 +15,24 @@ checkExp(Exp, vtable, avoid) = case Exp of
     num => ok
   | id  => v := lookup(vtable, name(id))
            if v is undefined
-             then error (v is undefined)
+             then error (name(id) is undefined)
              else
-           if type(v) is an array
-             then error (Array v is used as an integer)
+           if v is an array
+             then error (Array name(id) is used as an integer)
              else
-           if name(v) = avoid
+           if name(id) = avoid
              then error (LHS variable used on RHS)
              else ok
   | id `[` Exp1 `]` =>
            checkExp(Exp1, vtable, ftable, avoid)
            v := lookup(vtable, name(id))
            if v is undefined
-             then error (v is undefined)
+             then error (name(id) is undefined)
              else
-           if type(v) is an integer
+           if v is an integer
              then error (Integer name(id) is used as an array)
              else
-           if name(v) = avoid
+           if name(id) = avoid
              then error (LHS variable used on RHS)
              else ok
   | Exp1 `+` Exp2
@@ -58,31 +58,31 @@ checkStat(Stat, vtable, pnames) = case Stat of
   | id `-=` Exp2 =>
            v := lookup(vtable, name(id))
            if v is undefined
-             then error (v is undefined)
+             then error (name(id) is undefined)
              else
-           if type(v) an array
-             then error (Array v is used as an integer)
+           if v is an array
+             then error (Array name(id) is used as an integer)
              else checkExp(Exp2, vtable, name(id))
   | id `[` Exp1 `]` `+=` Exp2
   | id `[` Exp1 `]` `-=` Exp2 =>
            checkExp(Exp1, vtable, none)
            v := lookup(vtable, name(id))
            if v is undefined
-             then error (v is undefined)
+             then error (name(id) is undefined)
              else
-           if type(v) is an integer
-             then error (Integer v is used as an array)
+           if v is an integer
+             then error (Integer name(id) is used as an array)
              else checkExp(Exp2, vtable, name(id))
   | `if` Cond1 `then` Stat1 `else` Stat2 `fi` Cond2 =>
            checkCond(Cond1, vtable)
            checkStat(Stat1, vtable, pnames)
-           checkCond(Cond2, vtable)
            checkStat(Stat2, vtable, pnames)
+           checkCond(Cond2, vtable)
   | `from` Cond1 `do` Stat1 `loop` Stat2 `until` Cond2 =>
            checkCond(Cond1, vtable)
            checkStat(Stat1, vtable, pnames)
-           checkCond(Cond2, vtable)
            checkStat(Stat2, vtable, pnames)
+           checkCond(Cond2, vtable)
   | Skip => ok
   | Call pname
   | Uncall pname =>
@@ -126,7 +126,7 @@ checkDefs(Def :: Defs, vtable) =
                if type(Def) is array and size = 0
                  then error (Zero-sized array: name(Def))
                else
-                 bind(vtable,name(Def),type(Def))
-                 checkDefs(Defs,vtable)
+                 vtable' := bind(vtable,name(Def),type(Def))
+                 checkDefs(Defs,vtable')
 \end{verbatim}
 

@@ -41,11 +41,10 @@ bijective during runtime in two ways:
   end
 \end{verbatim}
 
-  \item The second conditions of if-statements and loop-statements function as
-        assertions of bijectivity since the first condition must always evaluate
-        to the opposite of the second condition. This is handled in the
-        \verb+checkStat+ function that depends on the function \verb+compileCond+,
-        which we added.
+  \item The first condition of {\tt loop}-statements and the second condition
+        of {\tt if}-statements are run-time assertions of bijectivity. 
+        These assertions are handled in {\tt compileStat} using {\tt compileCond}, 
+        which jumps to {\tt \_ifassertfail\_} or {\tt \_loopassertfail\_}.
 
         The function \verb+compileCond+ takes as argument a piece of abstract
         syntax corresponding to a condition, and two labels. It then produces
@@ -104,7 +103,7 @@ A second case to consider is illustrated in the example \verb!foo[foo[0]+2] += b
 That is, whether the identifier that is being updated can be part of the
 expression that calculates the index of the array on the left-hand side. Since
 this sub-expression is not updating anything, and since it must be and is
-calculated before the variable can be updated, then the statement is
+calculated before the variable can be updated, the statement is
 well-defined both forwards and backwards.
 
 \vspace{0.2cm}
