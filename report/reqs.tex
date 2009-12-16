@@ -102,7 +102,7 @@ Examples of these cases are: \verb!a += a! and \verb!b[b[0]] += 1!, assuming
 \verb!b[0] == 0! to begin with. The first of these is a restriction from the
 assignment, and the latter is a restriction in Janus, cf. \cite[ch.
 2.1]{yokoyama}. We reason that it is possible to allow the latter, but that it
-requires runtime checking to ensure that the index is calculated before the
+requires runtime checking to ensure that the index calculated before the
 assignment is equal to the index calculated after. We have however not added
 this feature, partly because it is safer to just not allow it, and partly
 because the specification of the language forbids it.
