@@ -3,15 +3,26 @@
 In the {\tt Compiler.sml} file we've added code for the following tasks:
 
 \begin{itemize}
-\item {\tt makeArraySpace}, making room for arrays in the beginning of the {\tt DATA} section.
-\item loopassert and ifassert for ensuring that the bijectivity holds.
-\item added arrays to {\tt findvars} (trivial)
-\item implemented {\tt makeReads}, {\tt makeWrites}, {\tt makeZero} and {\tt checkZero} for arrays. 
-\item implemented arrays which can be used on both left- and righthand sides.
-\item added {\tt compileCond}, which generates code for conditional statements.
-\item implemented if and loop in {\tt compileStat}, which uses {\tt compileCond}.
-\item added the {\tt uncall} function, which runs the code marked with \_backwards\_.
-\item added reverseStatement, which defines the backwards code.
-\item added \_backwards\_ to {\tt compileProcs}, generating the backwards code.
+\item {\tt makeArraySpace}, which created allocated space for arrays in the
+      beginning of the {\tt DATA} section. The space could have been allocated
+      anywhere in the {\tt DATA} section, but as it need to be aligned to a
+      $4$-bit address, it is easiest to place it at the beginning of the
+      section.
+\item Assertion checking for {\tt if} and {\tt loop} to ensure that the
+      bijectivity holds.
+\item Added arrays to {\tt findvars} (trivial).
+\item Implemented {\tt makeReads}, {\tt makeWrites}, {\tt makeZero} and
+      {\tt checkZero} for arrays.
+\item Implemented arrays which can be used on both left- and righthand sides.
+\item Added {\tt compileCond}, which generates code for conditional statements
+      using two jump positions.
+\item Implemented {\tt if} and {\tt loop} in {\tt compileStat}, which uses
+      {\tt compileCond}.
+\item Added the {\tt uncall} function, which runs the code marked with
+      {\tt \_backwards\_}.
+\item Added {\tt reverseStatement}, reverses a statement (which could consist of
+      multiple statements).
+\item Added {\tt \_backwards\_} to {\tt compileProcs}, generating the reversed
+      code using {\tt reverseStatement}.
 \end{itemize}
 

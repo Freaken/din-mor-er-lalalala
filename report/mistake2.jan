@@ -1,0 +1,8 @@
+y[2] t -> x;
+
+uncall p
+
+procedure p
+    y[y[0]] += x;
+    t += x;
+    x -= t
