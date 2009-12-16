@@ -27,7 +27,8 @@ struct
                  if x=avoid
                  then raise Error ("LHS variable used on RHS",p)
                  else ()
-              | _ => raise Error ("array variable used as integer",p))
+              | SOME (Array _) => raise Error ("Variable " ^ x ^ " is an Array, but is used as an Integer", p)
+              | _ => raise Error ("Variable " ^ x ^ " is not defined",p))
         |  Janus.ArrayIndex (x,e,p) =>
             (checkExp e vtable avoid;
                 (case lookup x vtable of
@@ -35,7 +36,8 @@ struct
                     if x=avoid
                     then raise Error ("LHS variable used on RHS",p)
                     else ()
-                    | _ => raise Error ("integer variable used as array",p)))
+                | SOME Integer => raise Error ("Variable " ^ x ^ " is an Integer, but is used as an Array", p)
+                | _ => raise Error ("Variable " ^ x ^ " is not defined",p)))
        )
     | Janus.Plus (e1,e2,pos) =>
        (checkExp e1 vtable avoid; checkExp e2 vtable avoid)
@@ -62,13 +64,15 @@ struct
              (case lookup x vtable of
                SOME Integer =>
                  checkExp e vtable x
-             | _ => raise Error ("array variable used as integer",p))
+             | SOME (Array _) => raise Error ("Variable " ^ x ^ " is an Array, but is used as an Integer", p)
+             | _ => raise Error ("Variable " ^ x ^ " is not defined",p))
         |  Janus.ArrayIndex (x,e1,p) =>
              (checkExp e1 vtable "";
              (case lookup x vtable of
                SOME (Array _) =>
                  checkExp e vtable x
-             | _ => raise Error ("integer variable used as array",p)))
+             | SOME Integer => raise Error ("Variable " ^ x ^ " is an Integer, but is used as an Array", p)
+             | _ => raise Error ("Variable " ^ x ^ " is not defined",p)))
         )
     | Janus.SubUpdate (lv,e,pos) =>
         (case lv of
@@ -76,13 +80,15 @@ struct
              (case lookup x vtable of
                SOME Integer =>
                  checkExp e vtable x
-             | _ => raise Error ("array variable used as integer",p))
+             | SOME (Array _) => raise Error ("Variable " ^ x ^ " is an Array, but is used as an Integer", p)
+             | _ => raise Error ("Variable " ^ x ^ " is not defined",p))
         |  Janus.ArrayIndex (x,e1,p) =>
              (checkExp e1 vtable "";
              (case lookup x vtable of
                SOME (Array _) =>
                  checkExp e vtable x
-             | _ => raise Error ("integer variable used as array",p)))
+             | SOME Integer => raise Error ("Variable " ^ x ^ " is an Integer, but is used as an Array", p)
+             | _ => raise Error ("Variable " ^ x ^ " is not defined",p)))
         )
     | Janus.If (c1,s1,s2,c2,pos) =>
         (
